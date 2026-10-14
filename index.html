@@ -1,0 +1,562 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111014">
+  <meta name="description" content="Nafiz Khan — aspiring email and sales copywriter from Bangladesh.">
+  <title>Nafiz Khan | Copywriter</title>
+
+  <style>
+    :root {
+      --bg: #111014;
+      --surface: #1b1821;
+      --text: #f4f0f8;
+      --muted: #b5adbf;
+      --purple: #a78bfa;
+      --accent: #7653c8;
+      --border: #352d40;
+      --width: 1060px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(var(--width), 88%);
+      margin: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(17, 16, 20, 0.96);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .logo span,
+    .purple {
+      color: var(--purple);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 23px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    nav a:hover,
+    .email:hover {
+      color: var(--purple);
+    }
+
+    .hero {
+      min-height: 78vh;
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      align-items: center;
+      gap: 60px;
+      padding-top: 80px;
+      padding-bottom: 90px;
+    }
+
+    .eyebrow {
+      color: var(--purple);
+      font-size: 0.78rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      letter-spacing: -2.5px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .hero-copy {
+      max-width: 570px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 11px 20px;
+      border: 1px solid var(--purple);
+      border-radius: 5px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .portrait {
+      width: 100%;
+      max-width: 310px;
+      justify-self: end;
+    }
+
+    .portrait img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .photo-note {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    section.content-section {
+      padding: 85px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.2;
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+    }
+
+    .section-intro {
+      max-width: 650px;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 27px;
+    }
+
+    .number {
+      color: var(--purple);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .card p,
+    .about-copy p {
+      color: var(--muted);
+    }
+
+    .sample-subject {
+      margin-top: 18px;
+      color: var(--text) !important;
+    }
+
+    .sample-body {
+      margin-top: 9px;
+      font-size: 0.94rem;
+    }
+
+    .label {
+      display: inline-block;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 8px;
+      color: var(--purple);
+      font-size: 0.75rem;
+      margin-top: 16px;
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 0.6fr 1.4fr;
+      gap: 45px;
+    }
+
+    .initial {
+      color: var(--purple);
+      font-size: 5rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .about-copy p {
+      margin-bottom: 17px;
+    }
+
+    .principle {
+      border-left: 2px solid var(--purple);
+      padding-left: 16px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 25px;
+    }
+
+    .contact-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: clamp(26px, 5vw, 48px);
+    }
+
+    .contact-panel p {
+      color: var(--muted);
+      max-width: 600px;
+      margin: 15px 0 23px;
+    }
+
+    .email {
+      color: var(--purple);
+      overflow-wrap: anywhere;
+    }
+
+    footer {
+      padding: 25px 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 15px 0;
+      }
+
+      nav {
+        gap: 14px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 38px;
+        min-height: auto;
+        padding-top: 65px;
+        padding-bottom: 65px;
+      }
+
+      h1 {
+        letter-spacing: -1.5px;
+      }
+
+      .portrait {
+        justify-self: center;
+        max-width: 280px;
+      }
+
+      section.content-section {
+        padding: 65px 0;
+      }
+
+      .grid,
+      .about-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .initial {
+        font-size: 3.5rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#home">Nafiz<span>.</span></a>
+
+      <nav aria-label="Main navigation">
+        <a href="#services">Services</a>
+        <a href="#work">Sample work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="container hero" id="home">
+      <div>
+        <p class="eyebrow">Email &amp; Sales Copywriting</p>
+
+        <h1>Words that connect.<br>
+          <span class="purple">Copy that cares.</span>
+        </h1>
+
+        <p class="hero-copy">
+          I write clear, thoughtful copy to help businesses communicate
+          their value, connect with their audience, and make the next
+          step easier.
+        </p>
+
+        <div class="buttons">
+          <a class="button primary" href="#work">Explore my work</a>
+          <a class="button" href="#contact">Let's talk</a>
+        </div>
+      </div>
+
+      <div class="portrait">
+        <!-- Your original photo will go here in the next step. -->
+        <img
+          src="images/nafiz-main.jpg"
+          alt="Portrait of Nafiz Khan"
+          width="620"
+          height="775"
+        >
+        <p class="photo-note">The person behind the words.</p>
+      </div>
+    </section>
+
+    <section class="content-section" id="services">
+      <div class="container">
+        <p class="eyebrow">What I do</p>
+        <h2 class="section-title">Good copy starts with understanding.</h2>
+        <p class="section-intro">
+          My focus is on writing that sounds human, respects the reader,
+          and gives people a clear reason to care.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <p class="number">01 / EMAIL</p>
+            <h3>Email Copywriting</h3>
+            <p>
+              Welcome emails, re-engagement emails, and promotional
+              messages built around the reader's needs and the
+              business's goal.
+            </p>
+          </article>
+
+          <article class="card">
+            <p class="number">02 / SALES</p>
+            <h3>Sales Copywriting</h3>
+            <p>
+              Product descriptions and sales-page copy that explain
+              benefits clearly, answer questions, and help customers
+              make informed decisions.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="work">
+      <div class="container">
+        <p class="eyebrow">Practice projects</p>
+        <h2 class="section-title">Ideas put into words.</h2>
+        <p class="section-intro">
+          These are fictional concept projects that demonstrate my
+          writing approach. They are not paid client work.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <p class="number">PROJECT 01 / EMAIL</p>
+            <h3>Morning Ritual</h3>
+            <p>
+              A welcome-email concept for a fictional coffee brand,
+              built around the comfort of a good morning cup.
+            </p>
+
+            <p class="sample-subject">
+              <strong>Subject:</strong> Make your morning as smooth as our coffee
+            </p>
+
+            <p class="sample-body">
+              Your mornings are busy enough. Finding a coffee you look
+              forward to shouldn't have to be another task on the list.
+              Discover a blend that fits your taste and make a little
+              room for a better morning ritual.
+            </p>
+
+            <span class="label">Fictional concept</span>
+          </article>
+
+          <article class="card">
+            <p class="number">PROJECT 02 / SALES COPY</p>
+            <h3>The Daily Planner</h3>
+            <p>
+              A product-description concept for a fictional planner,
+              focused on the frustration of feeling busy without
+              knowing what has actually been accomplished.
+            </p>
+
+            <p class="sample-subject">
+              <strong>Headline:</strong> Your day deserves a little more direction.
+            </p>
+
+            <p class="sample-body">
+              A long to-do list can make every task feel equally urgent.
+              Give your priorities their own space, break big goals into
+              smaller steps, and finish the day with a clearer picture
+              of what matters next.
+            </p>
+
+            <span class="label">Fictional concept</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="about">
+      <div class="container">
+        <p class="eyebrow">About me</p>
+        <h2 class="section-title">Still learning. Serious about improving.</h2>
+
+        <div class="about-layout">
+          <div class="initial" aria-hidden="true">N.</div>
+
+          <div class="about-copy">
+            <p>
+              I'm Nafiz Khan, an aspiring independent copywriter from
+              Bangladesh. I'm building my skills in email and sales copy,
+              with a focus on clear communication, careful research,
+              and writing that respects the reader.
+            </p>
+
+            <p>
+              I'm at the beginning of this journey. The work displayed
+              here consists of practice projects, and I'm looking for
+              opportunities to learn, improve, and help businesses
+              communicate more effectively.
+            </p>
+
+            <p>
+              I believe good writing isn't about sounding complicated.
+              It's about understanding a person, finding what matters,
+              and saying it clearly.
+            </p>
+
+            <div class="principle">Be better, not perfect.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="contact">
+      <div class="container">
+        <div class="contact-panel">
+          <p class="eyebrow">Get in touch</p>
+          <h2 class="section-title">Have something in mind?</h2>
+
+          <p>
+            If you need help with an email or sales-copy project,
+            I'd be glad to hear about it. Tell me what you're working
+            on, and we can start a conversation.
+          </p>
+
+          <a class="button primary"
+             href="mailto:n.tonmoy.khan@gmail.com?subject=Copywriting%20Inquiry">
+            Email me
+          </a>
+
+          <p>
+            <a class="email" href="mailto:n.tonmoy.khan@gmail.com">
+              n.tonmoy.khan@gmail.com
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>&copy; <span id="year"></span> Nafiz Khan</span>
+      <span>Built with care, one step at a time.</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
+</body>
+</html>
+```
