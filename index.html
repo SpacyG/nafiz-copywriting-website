@@ -342,6 +342,39 @@
         transition: none !important;
       }
     }
+    ```css
+/* Reviews section */
+.review-section {
+  padding: 85px 0;
+  border-top: 1px solid var(--border);
+}
+
+.review-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: clamp(20px, 4vw, 35px);
+}
+
+.review-frame {
+  width: 100%;
+  min-height: 1050px;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .review-section {
+    padding: 65px 0;
+  }
+
+  .review-frame {
+    min-height: 1150px;
+  }
+}
+     ```
   </style>
 </head>
 
@@ -550,7 +583,29 @@
         </div>
       </div>
     </section>
+    
+<section class="review-section" id="reviews">
+  <div class="container">
+    <p class="eyebrow">Feedback</p>
 
+    <h2 class="section-title">Worked with me?</h2>
+
+    <p class="section-intro">
+      I'd appreciate your honest feedback. It helps me understand
+      what I'm doing well and where I can improve.
+    </p>
+
+    <div class="review-panel">
+      <iframe
+        class="review-frame"
+        src="PASTE_YOUR_GOOGLE_FORMS_EMBED_URL_HERE"
+        title="Leave feedback for Nafiz Khan"
+        loading="lazy">
+      </iframe>
+    </div>
+  </div>
+</section>
+    
     <section class="content-section" id="contact">
       <div class="container">
         <div class="contact-panel">
