@@ -348,7 +348,7 @@
     /* Interactive orbit navigation */
     .orbit-nav {
       position: fixed;
-      right: 22px;
+      right: clamp(18px, 3vw, 42px);
       top: 50%;
       transform: translateY(-50%);
       z-index: 20;
@@ -458,7 +458,7 @@
     }
 
     @media (max-width: 900px) {
-      .orbit-nav { right: 12px; width: 142px; height: 142px; }
+      .orbit-nav { right: clamp(20px, 3vw, 38px); width: 142px; height: 142px; }
       .orbit-nav::before { inset: 13px; }
       .orbit-nav::after { inset: 28px; }
       .orbit-link { width: 27px; height: 27px; }
@@ -702,6 +702,8 @@
     }
     .hero-copy { max-width: 530px; line-height: 1.85; }
     .hero .buttons { align-items: center; margin-bottom: 28px; }
+    .hero > div:first-child { justify-self: start; text-align: left; }
+    .hero .buttons { justify-content: flex-start; }
     .button {
       border-radius: 7px;
       padding: 12px 21px;
@@ -709,14 +711,7 @@
     }
     .button.primary { box-shadow: 0 8px 25px rgba(121,86,207,.2); }
     .button:hover { box-shadow: 0 8px 24px rgba(180,154,255,.13); }
-    .hero .buttons::after {
-      content: "EMAILS  ·  SALES PAGES  ·  LANDING PAGES  ·  WEBSITE COPY";
-      flex-basis: 100%;
-      color: #8f859e;
-      font-size: .68rem;
-      letter-spacing: 1.5px;
-      margin-top: 8px;
-    }
+    .hero .buttons::after { content: none !important; display: none !important; }
     .portrait {
       position: relative;
       z-index: 1;
@@ -1284,9 +1279,117 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
     .future-work-note strong { color:var(--text); }
     @media (prefers-reduced-motion: reduce) { .work-more-btn { transition:none; } .work-more-btn:hover { transform:none; } }
 
-  </style>
+  
+
+  /* Rocket cursor: flame is off while idle and smoothly fades in only during movement. */
+@media (hover: hover) and (pointer: fine) {
+  html, body, a, button, input, textarea, select, [role="button"], .planet, .planet:active { cursor: none !important; }
+  #rocketCursor { position:fixed; left:0; top:0; width:31px; height:31px; z-index:99999; pointer-events:none; opacity:0; transform:translate3d(-100px,-100px,0) rotate(-35deg); will-change:transform; filter:drop-shadow(0 0 3px rgba(167,139,250,.25)); }
+  #rocketCursor.is-visible { opacity:1; }
+  #rocketCursor .rocket-flame { opacity:0; transform:scale(.35); transform-origin:13px 19px; transition:opacity .18s ease, transform .22s ease; }
+  #rocketCursor.is-moving .rocket-flame { opacity:1; transform:scale(1); animation:rocket-thrust .28s ease-in-out infinite alternate; filter:drop-shadow(0 0 6px rgba(255,145,66,.85)); }
+  #rocketCursor.is-hovering { filter:drop-shadow(0 0 7px rgba(167,139,250,.7)); }
+  @keyframes rocket-thrust { from { transform:scale(.82,.88); } to { transform:scale(1.08,1.16); } }
+}
+@media (prefers-reduced-motion: reduce) { #rocketCursor .rocket-flame { animation:none !important; transition:none !important; } }
+
+  
+/* Living cosmos: subtle pointer-reactive stars and tactile planet artwork */
+#cosmicStarfield { position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:.82; }
+body > *:not(#cosmicStarfield):not(.planet-playground):not(#rocketCursor) { position:relative; z-index:2; }
+.planet-playground { position:fixed; inset:0; z-index:3; pointer-events:none; overflow:hidden; }
+/* Keep decorative planets below readable page content. */
+.planet-playground { isolation:isolate; }
+/* Keep the transparent overlay click-through; individual planets remain draggable above page layers. */
+.planet { position:absolute; z-index:3; border-radius:50%; pointer-events:auto; cursor:grab; touch-action:none; user-select:none; will-change:transform; box-shadow:inset -12px -10px 20px rgba(6,4,18,.5), inset 5px 4px 10px rgba(255,255,255,.18), 0 0 24px rgba(148,103,255,.18); transition:box-shadow .2s ease; }
+.planet:active { cursor:grabbing; }
+.planet:hover, .planet:focus-visible, .planet.is-dragging { z-index:4; opacity:1 !important; box-shadow:inset -12px -10px 20px rgba(6,4,18,.5), inset 5px 4px 10px rgba(255,255,255,.22), 0 0 32px rgba(176,139,255,.4); outline:none; }
+.planet-lilac { width:76px; height:76px; left:8%; top:24%; background:radial-gradient(circle at 28% 25%,#e3d7ff 0,#9f83dc 24%,#63468f 58%,#21152f 100%); }
+.planet-ring { position:absolute; width:125px; height:33px; border:2px solid rgba(205,184,255,.58); border-left-color:rgba(205,184,255,.2); border-right-color:rgba(205,184,255,.85); border-radius:50%; left:-27px; top:22px; transform:rotate(-24deg); }
+.planet-orchid { width:48px; height:48px; right:7%; top:62%; background:radial-gradient(circle at 30% 24%,#ffd5f4 0,#c17bd7 28%,#6b3c94 62%,#25142f 100%); }
+.planet-moon { width:31px; height:31px; right:19%; top:19%; background:radial-gradient(circle at 30% 25%,#f2eaff 0,#aaa0c9 35%,#5c5477 72%,#252034 100%); }
+.planet-moon::before,.planet-moon::after { content:"";position:absolute;border-radius:50%;background:rgba(42,34,63,.28); }
+.planet-moon::before { width:6px;height:5px;left:9px;top:8px; } .planet-moon::after { width:4px;height:4px;left:19px;top:18px; }
+
+.planet-azure { width:40px;height:40px;left:22%;top:76%;background:radial-gradient(circle at 28% 24%,#d8f6ff 0,#72b7d8 30%,#31517f 68%,#17152f 100%); }
+.planet-rose { width:27px;height:27px;right:30%;top:43%;background:radial-gradient(circle at 28% 24%,#ffe0f3 0,#c875b9 35%,#573064 75%,#201329 100%); }
+.planet-gold { width:22px;height:22px;left:43%;top:15%;background:radial-gradient(circle at 28% 24%,#fff4c4 0,#e8bb75 35%,#76518b 75%,#24172f 100%); }
+.planet-teal { width:34px;height:34px;right:12%;top:83%;background:radial-gradient(circle at 28% 24%,#d7fff8 0,#68bdbb 32%,#345e81 70%,#1d1732 100%); }
+.planet-azure,.planet-rose,.planet-gold,.planet-teal { opacity:.8; }
+
+@media (max-width:700px) { .planet-lilac {width:45px;height:45px;left:3%;top:19%;opacity:.65}.planet-ring{width:75px;height:20px;left:-16px;top:13px}.planet-orchid{width:30px;height:30px;right:3%;top:70%;opacity:.6}.planet-moon{width:20px;height:20px;right:8%;top:13%;opacity:.65}.planet-azure{width:25px;height:25px;left:15%;top:79%}.planet-rose{width:19px;height:19px;right:25%;top:45%}.planet-gold{width:16px;height:16px;left:43%;top:12%}.planet-teal{width:23px;height:23px;right:7%;top:85%} }
+@media (prefers-reduced-motion:reduce) { .planet {transition:none} }
+
+
+/* Distant home-page sun: luminous, restrained, and behind the hero copy. */
+.distant-sun { position:absolute; width:clamp(105px,15vw,205px); aspect-ratio:1; right:clamp(90px,15vw,220px); top:clamp(22px,7vh,78px); border-radius:50%; pointer-events:none; z-index:0; opacity:.92; background:radial-gradient(circle,rgba(255,246,213,.98) 0 5%,rgba(255,210,135,.9) 11%,rgba(255,168,110,.35) 25%,rgba(172,112,255,.13) 45%,transparent 70%); filter:blur(.2px); animation:sun-pulse 6s ease-in-out infinite; }
+.distant-sun::before { content:"";position:absolute;inset:17%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9dc 0,#ffd995 22%,#ffb875 48%,rgba(230,132,255,.5) 72%,transparent 100%);box-shadow:0 0 24px 8px rgba(255,190,128,.23),0 0 75px 24px rgba(170,120,255,.15); }
+.distant-sun::after { content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(255,197,128,.12),transparent 66%); }
+@keyframes sun-pulse { 0%,100%{transform:scale(.98);filter:brightness(.95)}50%{transform:scale(1.04);filter:brightness(1.12)} }
+.orbit-nav { perspective:850px; transform:translateY(-50%) rotateY(-8deg) rotateX(2deg); transform-style:preserve-3d; transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
+.orbit-nav:hover,.orbit-nav:focus-within { transform:translateY(-50%) rotateY(5deg) rotateX(-3deg);box-shadow:0 18px 45px rgba(0,0,0,.32),0 0 38px rgba(148,103,255,.2); }
+.orbit-core { transform:translateZ(18px); }
+.orbit-link { transform-style:preserve-3d; }
+.orbit-link:hover,.orbit-link:focus-visible,.orbit-link.active { filter:drop-shadow(0 0 9px rgba(180,145,255,.42)); }
+@media(max-width:700px){.distant-sun{right:10px;top:24px;width:95px;opacity:.65}.orbit-nav{right:8px;}}
+@media(prefers-reduced-motion:reduce){.distant-sun{animation:none}.orbit-nav{transition:none}}
+
+
+/* Correction: place the six-stop section orbit itself on the right edge. */
+.orbit-nav { position:fixed !important; right:clamp(18px,3vw,42px) !important; left:auto !important; top:50% !important; margin:0 !important; z-index:50 !important; }
+@media(max-width:700px){.orbit-nav{right:12px !important;top:auto !important;bottom:18px !important;}}
+/* Keep the complete sun comfortably inside the hero instead of cropping its glow. */
+.distant-sun { width:clamp(125px,13vw,180px) !important; right:clamp(145px,23vw,330px) !important; top:clamp(90px,14vh,150px) !important; overflow:visible !important; }
+.distant-sun::after { inset:-35% !important; }
+@media(max-width:700px){.distant-sun{width:88px !important;right:70px !important;top:70px !important;opacity:.62 !important}}
+/* Give the orbit wheel convincing depth without shifting its position. */
+.orbit-nav { transform:translateY(-50%) rotateY(-12deg) rotateX(4deg) !important; transform-origin:center; }
+.orbit-nav:hover,.orbit-nav:focus-within { transform:translateY(-50%) rotateY(8deg) rotateX(-4deg) scale(1.035) !important; }
+
+</style>
+
 </head>
 <body>
+<canvas id="cosmicStarfield" aria-hidden="true"></canvas>
+<div class="planet-playground" aria-label="Decorative planets; drag them around" role="group">
+  <div class="planet planet-lilac" tabindex="0" role="img" aria-label="Lilac planet. Drag to explore."><span class="planet-ring"></span></div>
+  <div class="planet planet-orchid" tabindex="0" role="img" aria-label="Orchid planet. Drag to explore."></div>
+  <div class="planet planet-moon" tabindex="0" role="img" aria-label="Small cratered moon. Drag to explore."></div>
+  <div class="planet planet-azure" tabindex="0" role="img" aria-label="Blue planet. Drag to explore."></div>
+  <div class="planet planet-rose" tabindex="0" role="img" aria-label="Rose planet. Drag to explore."></div>
+  <div class="planet planet-gold" tabindex="0" role="img" aria-label="Golden planet. Drag to explore."></div>
+  <div class="planet planet-teal" tabindex="0" role="img" aria-label="Teal planet. Drag to explore."></div>
+</div>
+
+
+<div id="rocketCursor" aria-hidden="true"><svg viewBox="0 0 36 36" width="31" height="31" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rocketBody" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffaff"/><stop offset=".55" stop-color="#c4b5fd"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient><radialGradient id="rocketFire"><stop offset="0" stop-color="#fff4b0"/><stop offset=".48" stop-color="#ffad55"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient></defs><path class="rocket-flame" d="M16 23 C12 27 13 31 16 34 C20 31 20 27 18 23Z" fill="url(#rocketFire)"/><path d="M17.5 2.5 C11 7.4 9 14.2 10.2 21.5 L17.5 27 L24.8 21.5 C26 14.2 24 7.4 17.5 2.5Z" fill="url(#rocketBody)" stroke="#ede9fe" stroke-width=".8"/><circle cx="17.5" cy="13" r="3" fill="#28203c" stroke="#fff" stroke-width="1.1"/><path d="M10.8 18.5 L5.7 23.4 L11.7 23.2 M24.2 18.5 L29.3 23.4 L23.3 23.2" fill="#8b5cf6" stroke="#c4b5fd" stroke-width="1" stroke-linejoin="round"/><path d="M15.1 25.2 L17.5 29 L19.9 25.2" fill="#fb923c"/></svg></div>
+<script>
+(() => {
+  const rocket = document.getElementById('rocketCursor');
+  if (!rocket || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  let targetX=-100, targetY=-100, drawX=-100, drawY=-100, angle=-90, targetAngle=-90, lastX=null, lastY=null, raf=0, stopTimer=0;
+  const shortest=(a,b)=>((b-a+540)%360)-180;
+  function frame(){
+    drawX += (targetX-drawX)*0.24; drawY += (targetY-drawY)*0.24;
+    angle += shortest(angle,targetAngle)*0.18;
+    rocket.style.transform=`translate3d(${drawX-15.5}px,${drawY-15.5}px,0) rotate(${angle+90}deg)`;
+    if(Math.abs(targetX-drawX)>.15 || Math.abs(targetY-drawY)>.15 || Math.abs(shortest(angle,targetAngle))>.2) raf=requestAnimationFrame(frame); else raf=0;
+  }
+  function move(e){
+    targetX=e.clientX; targetY=e.clientY;
+    if(!rocket.classList.contains('is-visible')) rocket.classList.add('is-visible');
+    if(lastX!==null){ const dx=targetX-lastX, dy=targetY-lastY; if(Math.hypot(dx,dy)>2){ targetAngle=Math.atan2(dy,dx)*180/Math.PI; rocket.classList.add('is-moving'); clearTimeout(stopTimer); stopTimer=setTimeout(()=>rocket.classList.remove('is-moving'),180); } }
+    lastX=targetX; lastY=targetY;
+    rocket.classList.toggle('is-hovering',!!e.target.closest('a,button,input,textarea,select,[role="button"]'));
+    if(!raf) raf=requestAnimationFrame(frame);
+  }
+  window.addEventListener('pointermove',move,{passive:true});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){rocket.classList.remove('is-moving');}});
+  window.addEventListener('blur',()=>rocket.classList.remove('is-visible','is-moving','is-hovering'));
+  window.addEventListener('focus',()=>{lastX=lastY=null;});
+})();
+</script>
+
   <main>
     <header class="portfolio-page-header">
       <div class="container">
@@ -1442,9 +1545,89 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
             <span class="label">Fictional concept · Limited brief</span>
           </article>
         </div>
-        <div class="future-work-note"><strong>This page is Dedicated to display work.</strong><br>Projects shown here can be Fictional samples or Real work examples as markes by the Tags.</div>
+
+          <article class="card">
+            <p class="number">PROJECT 05 / EMAIL · ABANDONED CART</p>
+            <h3>LumaSkin — Abandoned-Cart Email Sequence</h3>
+            <p>A three-email concept for a fictional skincare brand, introducing its Daily Balance Moisturizer and encouraging shoppers to return to their carts. This is a practice project, not paid client work.</p>
+            <div class="sample-email-part"><p class="sample-subject"><strong>Email 1 · Subject:</strong> Your skin should not miss the care it deserves.</p><p class="sample-subject"><strong>Preview:</strong> Your skin deserves attention</p><p class="sample-body">Skin is the one part of our body that is exposed to everything.<br>Busy schedules and complicated routines make it hard to care for our skin.<br>So we at LumaSkin present to you our latest product!<br>Our Daily Balance Moisturizer, designed to keep your delicate skin hydrated and smooth.<br>For more information, visit our product page.</p></div>
+            <div class="sample-email-part"><p class="sample-subject"><strong>Email 2 · Subject:</strong> Make hydration a part of your daily life.</p><p class="sample-subject"><strong>Preview:</strong> Skincare is not supposed to be hard.</p><p class="sample-body">Leaving your skin unattended for a long time can result in rough texture, dehydrated skin, and irritation.<br>This can make your skin more vulnerable to damage.<br>With our product, you can avoid all that!<br>Our Daily Balance Moisturizer is lightweight, non-greasy, and designed to be easy to use and fast-acting.<br>Just apply it once in the morning or evening, and it will keep your skin hydrated and smooth.<br>To order, click the link below.</p></div>
+            <div class="sample-email-part"><p class="sample-subject"><strong>Email 3 · Subject:</strong> Give your skin a gift.</p><p class="sample-subject"><strong>Preview:</strong> No more dehydrated skin!</p><p class="sample-body">We at LumaSkin care about you, and our Daily Balance Moisturizer is designed to do just that.<br>In a 50 mL container, you can have the gift your skin deserves.<br>It's lightweight and non-greasy, giving your skin a smooth, clear finish.<br>Orders over $10 qualify for free delivery.<br>Let us be a part of your daily skincare routine.</p></div>
+            <span class="label">Fictional concept · Practice project</span>
+          </article>
+        <div class="future-work-note"><strong>This page can grow with you.</strong><br>When you create another sample, add a new <code>&lt;article class="card"&gt;</code> inside the grid above. Keep each project clearly labelled as a concept or client project, as appropriate.</div>
       </div>
     </section>
   </main>
+
+<script>
+(() => {
+  const canvas = document.getElementById('cosmicStarfield');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let w=0,h=0,dpr=1,stars=[],px=-9999,py=-9999,raf=0,last=0,lastScroll=window.scrollY,scrollKick=0;
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function resize(){
+      dpr=Math.min(devicePixelRatio||1,1.5); w=innerWidth; h=innerHeight;
+      canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
+      canvas.style.width=w+'px'; canvas.style.height=h+'px'; ctx.setTransform(dpr,0,0,dpr,0,0);
+      stars=Array.from({length:Math.min(1800,Math.floor(w*h/760))},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.45+.2,a:Math.random()*.7+.16,dx:(Math.random()-.5)*.15,dy:(Math.random()-.5)*.15,phase:Math.random()*6.28,ox:0,oy:0,scrollVy:0,homeY:Math.random()*h}));
+      if(!raf) raf=requestAnimationFrame(draw);
+    }
+    function draw(t){
+      raf=0; const dt=Math.min(2,(t-last||16)/16); last=t; ctx.clearRect(0,0,w,h);
+      for(const p of stars){
+        if(!reduced){p.x+=p.dx*dt;p.y+=p.dy*dt;p.ox*=.88;p.oy*=.88;p.scrollVy*=Math.pow(.91,dt);p.y+=p.scrollVy*dt;p.scrollVy*=Math.pow(.94,dt);}
+        const dx=p.x-px,dy=p.y-py,dist=Math.hypot(dx,dy);
+        if(!reduced&&dist<105&&dist>0){const force=(105-dist)/105*.7;p.ox+=(dx/dist)*force*1.6;p.oy+=(dy/dist)*force*1.6;}
+        p.x+=p.ox*dt;p.y+=p.oy*dt;
+        if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+        const tw=reduced?1:.76+.24*Math.sin(t*.0012+p.phase);
+        const sy=((p.y%h)+h)%h;
+        ctx.beginPath();ctx.arc(p.x,sy,p.r,0,Math.PI*2);ctx.fillStyle='rgba(218,203,255,'+(p.a*tw)+')';ctx.fill();
+        if(p.r>1.25){ctx.beginPath();ctx.moveTo(p.x-3,sy);ctx.lineTo(p.x+3,sy);ctx.moveTo(p.x,sy-3);ctx.lineTo(p.x,sy+3);ctx.strokeStyle='rgba(195,170,255,'+(p.a*.28)+')';ctx.stroke();}
+      }
+      if(!reduced) raf=requestAnimationFrame(draw);
+    }
+    addEventListener('pointermove',e=>{px=e.clientX;py=e.clientY;if(!raf&&!reduced)raf=requestAnimationFrame(draw)} ,{passive:true});
+    addEventListener('blur',()=>{px=py=-9999});
+    addEventListener('resize',resize,{passive:true});
+    addEventListener('scroll',()=>{const current=window.scrollY,delta=current-lastScroll;lastScroll=current;if(!reduced&&delta!==0){const kick=Math.max(-34,Math.min(34,-delta*.72));for(const p of stars){const depth=.45+p.r/1.7;const dx=p.x-innerWidth*.5,dy=p.y-innerHeight*.5,dist=Math.max(80,Math.hypot(dx,dy));const wave=Math.max(0,1-Math.abs(dist-Math.min(innerWidth,innerHeight)*.32)/(Math.min(innerWidth,innerHeight)*.32));p.scrollVy+=kick*depth*(.72+wave*.85);p.oy+=Math.sign(dx||1)*Math.abs(delta)*.018*wave;} }if(!raf&&!reduced)raf=requestAnimationFrame(draw);},{passive:true});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden&&raf){cancelAnimationFrame(raf);raf=0}else if(!document.hidden&&!reduced&&!raf)raf=requestAnimationFrame(draw)});
+    resize(); if(reduced)draw(0);
+  }
+  document.querySelectorAll('.planet').forEach(planet=>{
+    let dragging=false,left=0,top=0,lastX=0,lastY=0,lastT=0,vx=0,vy=0,physics=0;
+    const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+    function stopMotion(){if(physics){cancelAnimationFrame(physics);physics=0;}}
+    function coast(now){
+      physics=0;if(dragging)return;
+      const dt=Math.min(2,Math.max(.5,(now-(coast.last||now-16))/16));coast.last=now;
+      left+=vx*dt;top+=vy*dt;const maxX=Math.max(0,innerWidth-planet.offsetWidth),maxY=Math.max(0,innerHeight-planet.offsetHeight);
+      if(left<0){left=0;vx=Math.abs(vx)*.55}else if(left>maxX){left=maxX;vx=-Math.abs(vx)*.55}
+      if(top<0){top=0;vy=Math.abs(vy)*.55}else if(top>maxY){top=maxY;vy=-Math.abs(vy)*.55}
+      planet.style.left=left+'px';planet.style.top=top+'px';
+      vx*=Math.pow(.986,dt);vy*=Math.pow(.986,dt);
+      if(Math.hypot(vx,vy)>.16)physics=requestAnimationFrame(coast);else{vx=vy=0;coast.last=0;}
+    }
+    planet.addEventListener('pointerdown',e=>{
+      if(e.button!==0 && e.pointerType==='mouse')return;
+      e.preventDefault();stopMotion();dragging=true;planet.classList.add('is-dragging');vx=vy=0;
+      const r=planet.getBoundingClientRect();left=r.left;top=r.top;lastX=e.clientX;lastY=e.clientY;lastT=performance.now();
+      planet.style.right='auto';planet.style.bottom='auto';planet.style.left=left+'px';planet.style.top=top+'px';
+      try{planet.setPointerCapture(e.pointerId)}catch(_e){}
+    });
+    planet.addEventListener('pointermove',e=>{
+      if(!dragging)return;const now=performance.now(),elapsed=Math.max(8,now-lastT),dx=e.clientX-lastX,dy=e.clientY-lastY;
+      const rawVx=dx/elapsed*16,rawVy=dy/elapsed*16;vx=vx*.55+rawVx*.45;vy=vy*.55+rawVy*.45;
+      left=clamp(left+dx,0,Math.max(0,innerWidth-planet.offsetWidth));top=clamp(top+dy,0,Math.max(0,innerHeight-planet.offsetHeight));
+      planet.style.left=left+'px';planet.style.top=top+'px';lastX=e.clientX;lastY=e.clientY;lastT=now;
+    });
+    const release=()=>{if(!dragging)return;dragging=false;planet.classList.remove('is-dragging');vx=clamp(vx*.7,-10,10);vy=clamp(vy*.7,-10,10);if(Math.hypot(vx,vy)>.35)physics=requestAnimationFrame(coast);else{vx=vy=0;}};
+    planet.addEventListener('pointerup',release);planet.addEventListener('pointercancel',release);planet.addEventListener('lostpointercapture',release);
+    planet.addEventListener('keydown',e=>{const step=e.shiftKey?20:8,r=planet.getBoundingClientRect();let x=r.left,y=r.top;if(e.key==='ArrowLeft')x-=step;else if(e.key==='ArrowRight')x+=step;else if(e.key==='ArrowUp')y-=step;else if(e.key==='ArrowDown')y+=step;else return;e.preventDefault();planet.style.left=clamp(x,0,innerWidth-planet.offsetWidth)+'px';planet.style.top=clamp(y,0,innerHeight-planet.offsetHeight)+'px';planet.style.right='auto';planet.style.bottom='auto';});
+  });
+})();
+</script>
 </body>
 </html>
