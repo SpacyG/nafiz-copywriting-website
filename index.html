@@ -149,6 +149,27 @@
       justify-self: end;
       position: relative;
       isolation: isolate;
+      align-self: end;
+    }
+
+    /* A soft nebula glow sits behind the cutout, not in a visible frame. */
+    .portrait::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: 4%;
+      right: 4%;
+      top: 10%;
+      bottom: 3%;
+      border-radius: 48% 48% 22% 22%;
+      background:
+        radial-gradient(ellipse at 50% 42%,
+          rgba(128, 76, 214, 0.24) 0%,
+          rgba(92, 52, 159, 0.12) 38%,
+          rgba(40, 24, 72, 0.04) 67%,
+          transparent 78%);
+      filter: blur(24px);
+      pointer-events: none;
     }
 
     .portrait img {
@@ -162,16 +183,19 @@
       border-radius: 0;
       background: transparent;
       box-shadow: none;
-      /* The cutout itself blends into the site's cosmic background. */
-      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
-      mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+      filter: drop-shadow(0 0 18px rgba(137, 89, 220, 0.10));
+      /* Keep the face crisp while softly dissolving the lower cut edge. */
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 70%, rgba(0,0,0,.88) 79%, rgba(0,0,0,.48) 89%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 70%, rgba(0,0,0,.88) 79%, rgba(0,0,0,.48) 89%, transparent 100%);
     }
 
     .photo-note {
       color: var(--muted);
       font-size: 0.8rem;
       text-align: center;
-      margin-top: 12px;
+      margin-top: -2px;
+      position: relative;
+      z-index: 1;
     }
 
     section.content-section {
@@ -1285,7 +1309,19 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
     .future-work-note strong { color:var(--text); }
     @media (prefers-reduced-motion: reduce) { .work-more-btn { transition:none; } .work-more-btn:hover { transform:none; } }
 
-  </style>
+  
+    @media (max-width: 760px) {
+      .portrait {
+        max-width: 310px;
+        justify-self: center;
+        margin-inline: auto;
+      }
+      .portrait::before {
+        filter: blur(18px);
+      }
+    }
+
+</style>
 </head>
 
 <body>
