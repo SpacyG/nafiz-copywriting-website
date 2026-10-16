@@ -145,19 +145,26 @@
 
     .portrait {
       width: 100%;
-      max-width: 310px;
+      max-width: 350px;
       justify-self: end;
+      position: relative;
+      isolation: isolate;
     }
 
     .portrait img {
       display: block;
       width: 100%;
-      aspect-ratio: 4 / 5;
+      /* Temporary portrait framing: a little wider to suit the current
+         head-and-upper-torso crop. Easy to adjust when the photo changes. */
+      aspect-ratio: 9 / 10;
       object-fit: cover;
-      object-position: center;
-      border-radius: 10px;
+      object-position: center 30%;
+      border-radius: 14px;
       border: 1px solid var(--border);
-      background: var(--surface);
+      background:
+        radial-gradient(ellipse at 50% 20%, rgba(154, 108, 255, .22), transparent 58%),
+        linear-gradient(145deg, #21172f, #0c0a12 72%);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, .28), 0 0 28px rgba(154, 108, 255, .10);
     }
 
     .photo-note {
@@ -525,7 +532,7 @@
 
       .portrait {
         justify-self: center;
-        max-width: 280px;
+        max-width: 320px;
       }
 
       section.content-section {
@@ -1189,7 +1196,96 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
 @media(max-width:600px){.service-card::after{right:.85rem;top:.85rem;width:2.2rem;height:2.2rem}#work .grid>.card::after{right:.8rem;top:.8rem;width:2rem;height:2rem}.section-title{padding-left:.8rem}}
 @media(prefers-reduced-motion:no-preference){.service-card::after,#work .grid>.card::after{transition:transform .25s ease,background .25s ease}.service-card:hover::after,#work .grid>.card:hover::after{transform:translateY(-2px) rotate(-5deg);background:rgba(145,93,220,.2)}}
 
-</style>
+
+    /* Temporary photo frame accents; update these alongside the image later. */
+    .portrait::before,
+    .portrait::after {
+      content: "";
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: .8;
+    }
+    .portrait::before {
+      top: -7px; right: -7px;
+      border-top: 2px solid var(--purple);
+      border-right: 2px solid var(--purple);
+      border-radius: 0 12px 0 0;
+    }
+    .portrait::after {
+      bottom: 28px; left: -7px;
+      border-bottom: 2px solid var(--purple);
+      border-left: 2px solid var(--purple);
+      border-radius: 0 0 0 12px;
+    }
+
+
+    /* Portrait: no card/frame. Let the cutout sit naturally in the cosmic scene. */
+    .portrait {
+      width: 100%; max-width: 390px; justify-self: end; position: relative;
+      isolation: isolate; align-self: end; margin: 0; padding: 0;
+      background: transparent; border: 0; box-shadow: none; overflow: visible;
+    }
+    .portrait::before, .portrait::after { display: none !important; }
+    .portrait img {
+      display: block; width: 100%; height: auto; aspect-ratio: auto;
+      object-fit: contain; object-position: center bottom;
+      border: 0; border-radius: 0; background: transparent; box-shadow: none;
+      filter: drop-shadow(0 10px 28px rgba(0,0,0,.2));
+      -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+    }
+    .photo-note { margin-top: -10px; position: relative; z-index: 1; }
+
+    /* Keep the same atmospheric cosmic treatment continuous through About. */
+    #about.content-section {
+      background:
+        radial-gradient(ellipse at 14% 45%, rgba(112,75,180,.12), transparent 48%),
+        radial-gradient(ellipse at 88% 15%, rgba(76,52,127,.12), transparent 45%),
+        linear-gradient(135deg, rgba(19,15,27,.94), rgba(9,8,14,.96));
+    }
+    #about.content-section::before { opacity: .9; }
+
+    /* Clickable service cards lead to the relevant sample-work section. */
+    .service-link { color: inherit; text-decoration: none; cursor: pointer; }
+    .service-link:focus-visible { outline: 2px solid #c9aaff; outline-offset: 5px; }
+    .service-link:hover { border-color: rgba(190,150,255,.65); }
+    .service-link:active { transform: translateY(-1px); }
+    @media (max-width: 720px) {
+      .portrait { max-width: min(82vw, 340px); justify-self: center; margin: 8px auto 0; }
+      .portrait img { width: 100%; }
+    }
+
+
+
+/* Reviews heading cleanup: remove stray decorative quote marks near the title. */
+#reviews .section-title::after { content: none !important; display: none !important; }
+#reviews .section-title::before { /* keep the normal purple title accent */ }
+#reviews .review-panel::before,
+#reviews .review-panel::after { content: none !important; display: none !important; }
+
+
+    /* More-work link */
+    .work-more-wrap { display:flex; flex-direction:column; align-items:center; gap:8px; margin-top:34px; text-align:center; }
+    .work-more-btn { display:inline-flex; align-items:center; gap:12px; padding:13px 20px; border:1px solid rgba(167,139,250,.55); border-radius:999px; background:linear-gradient(135deg, rgba(118,83,200,.28), rgba(27,24,33,.86)); box-shadow:0 0 26px rgba(118,83,200,.12); transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease; }
+    .work-more-btn:hover { transform:translateY(-3px); border-color:var(--purple); box-shadow:0 0 30px rgba(167,139,250,.2); }
+    .work-more-btn span { color:var(--purple); font-size:1.15em; }
+    .work-more-note { color:var(--muted); font-size:.85rem; }
+    .portfolio-page-header { padding:36px 0 22px; }
+    .portfolio-page-header .back-link { display:inline-flex; gap:8px; color:var(--purple); margin-bottom:22px; }
+    .portfolio-page-header .back-link:hover { color:var(--text); }
+    .portfolio-page-header h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.12; margin:8px 0 14px; }
+    .portfolio-page-header p { color:var(--muted); max-width:700px; }
+    .portfolio-page-grid { padding:22px 0 80px; }
+    .portfolio-page-grid .grid { align-items:stretch; }
+    .portfolio-page-grid .card { height:100%; }
+    .future-work-note { margin-top:28px; padding:20px 22px; border:1px dashed rgba(167,139,250,.35); border-radius:16px; color:var(--muted); background:rgba(118,83,200,.055); }
+    .future-work-note strong { color:var(--text); }
+    @media (prefers-reduced-motion: reduce) { .work-more-btn { transition:none; } .work-more-btn:hover { transform:none; } }
+
+  </style>
 </head>
 
 <body>
@@ -1261,26 +1357,26 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
         </p>
 
         <div class="grid services-grid">
-          <article class="card service-card">
+          <a class="card service-card service-link" href="#sample-email" aria-label="View the Morning Ritual email sample project">
             <p class="number">01 / EMAIL</p>
             <h3>Email Copywriting</h3>
             <p>Welcome sequences, promotional emails, re-engagement campaigns, and follow-ups that give readers a clear reason to open, read, and act.</p>
             <span class="label">Welcome · Promotional · Re-engagement</span>
-          </article>
+          </a>
 
-          <article class="card service-card">
+          <a class="card service-card service-link" href="#sample-sales" aria-label="View the Daily Planner sales copy sample project">
             <p class="number">02 / SALES</p>
             <h3>Sales Copywriting</h3>
             <p>Sales pages and product descriptions that explain value, answer common questions, and help potential customers make informed decisions.</p>
             <span class="label">Sales pages · Product descriptions</span>
-          </article>
+          </a>
 
-          <article class="card service-card">
+          <a class="card service-card service-link" href="#sample-landing" aria-label="View the Local Gym landing page sample project">
             <p class="number">03 / LANDING PAGES</p>
             <h3>Landing Page Copy</h3>
             <p>Focused page copy that connects a visitor's needs to a clear offer, supports the key message, and guides them toward one next step.</p>
             <span class="label">Lead generation · Offer pages</span>
-          </article>
+          </a>
 
           <article class="card service-card">
             <p class="number">04 / WEBSITE</p>
@@ -1304,7 +1400,7 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
         <div class="grid">
           <article class="card">
             <p class="number">PROJECT 01 / EMAIL</p>
-            <h3>Morning Ritual</h3>
+            <h3 id="sample-email">Morning Ritual</h3>
             <p>
               A welcome-email concept for a fictional coffee brand,
               built around the comfort of a good morning cup.
@@ -1343,7 +1439,7 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
 
           <article class="card">
             <p class="number">PROJECT 02 / SALES COPY</p>
-            <h3>The Daily Planner</h3>           
+            <h3 id="sample-sales">The Daily Planner</h3>           
             <p>
               A sales-page concept for a fictional stationery product
             </p>
@@ -1363,11 +1459,11 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
            <br>
               Say goodbye to:
            <br>
-              *Messy task lists
+              Messy task lists
            <br>
-              *Unclear priorities
+              Unclear priorities
            <br>
-              *Losing track of your progress
+              Losing track of your progress
            <br>
               Make a plan, focus on what matters, and give each day a clearer direction.
            <br>
@@ -1382,7 +1478,7 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
 
           <article class="card">
             <p class="number">PROJECT 03 / LANDING PAGE COPY</p>
-            <h3>Local Gym</h3>
+            <h3 id="sample-landing">Local Gym</h3>
             <p>
               A landing-page concept for a fictional local gym,
               focused on making strength training feel more approachable.
@@ -1444,6 +1540,10 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
             </p>
             <span class="label">Fictional concept · Limited brief</span>
           </article>
+        </div>
+        <div class="work-more-wrap">
+          <a class="btn work-more-btn" href="work.html">See more of my work <span aria-hidden="true">↗</span></a>
+          <p class="work-more-note">More samples, experiments, and future projects in one place.</p>
         </div>
       </div>
     </section>
