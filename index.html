@@ -1321,6 +1321,34 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
       }
     }
 
+
+
+    /* Hero portrait composition inspired by the cosmic reference image. */
+    .hero { position: relative; isolation: isolate; }
+    .hero::after {
+      content: ""; position: absolute; z-index: -1; pointer-events: none;
+      width: min(58vw, 760px); aspect-ratio: 1; right: -7%; top: -24%;
+      border-radius: 50%; opacity: .8;
+      background: radial-gradient(ellipse at 50% 58%, rgba(111,61,181,.23), rgba(72,42,126,.10) 36%, transparent 68%);
+      filter: blur(20px);
+    }
+    .portrait { max-width: 420px; }
+    .portrait::before {
+      display:block !important; content:""; position:absolute; z-index:-1;
+      left:-16%; right:-16%; top:28%; bottom:8%; width:auto; height:auto;
+      border:0 !important; border-radius:50%;
+      background: radial-gradient(ellipse, rgba(109,61,183,.32) 0%, rgba(77,43,130,.17) 38%, transparent 72%);
+      filter: blur(30px); opacity:1;
+    }
+    .portrait::after { display:none !important; }
+    .portrait img {
+      filter: drop-shadow(0 0 16px rgba(134,82,208,.12));
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 75%, rgba(0,0,0,.88) 84%, rgba(0,0,0,.42) 93%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 75%, rgba(0,0,0,.88) 84%, rgba(0,0,0,.42) 93%, transparent 100%);
+    }
+    .photo-note { text-align:center; color:#c9bedc; letter-spacing:.2px; }
+    @media (max-width:720px) { .hero::after { width:115vw; right:-24%; top:-6%; } .portrait { max-width:min(88vw,390px); } }
+
 </style>
 </head>
 
