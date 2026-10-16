@@ -1323,31 +1323,28 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
 
 
 
-    /* Hero portrait composition inspired by the cosmic reference image. */
-    .hero { position: relative; isolation: isolate; }
-    .hero::after {
-      content: ""; position: absolute; z-index: -1; pointer-events: none;
-      width: min(58vw, 760px); aspect-ratio: 1; right: -7%; top: -24%;
-      border-radius: 50%; opacity: .8;
-      background: radial-gradient(ellipse at 50% 58%, rgba(111,61,181,.23), rgba(72,42,126,.10) 36%, transparent 68%);
-      filter: blur(20px);
+    /* Purple rim light to blend the temporary portrait into the cosmic scene. */
+    .portrait {
+      isolation: isolate;
+      overflow: visible;
     }
-    .portrait { max-width: 420px; }
     .portrait::before {
-      display:block !important; content:""; position:absolute; z-index:-1;
-      left:-16%; right:-16%; top:28%; bottom:8%; width:auto; height:auto;
-      border:0 !important; border-radius:50%;
-      background: radial-gradient(ellipse, rgba(109,61,183,.32) 0%, rgba(77,43,130,.17) 38%, transparent 72%);
-      filter: blur(30px); opacity:1;
+      left: -12%; right: -12%; top: 2%; bottom: 10%;
+      border-radius: 50% 50% 35% 35%;
+      background:
+        radial-gradient(ellipse at 50% 24%, rgba(150, 91, 255, .42) 0%, rgba(118, 66, 220, .22) 28%, rgba(79, 42, 150, .10) 52%, transparent 74%),
+        radial-gradient(ellipse at 50% 66%, rgba(109, 59, 199, .20) 0%, transparent 68%);
+      filter: blur(34px);
+      z-index: -1;
     }
-    .portrait::after { display:none !important; }
     .portrait img {
-      filter: drop-shadow(0 0 16px rgba(134,82,208,.12));
-      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 75%, rgba(0,0,0,.88) 84%, rgba(0,0,0,.42) 93%, transparent 100%);
-      mask-image: linear-gradient(to bottom, #000 0%, #000 75%, rgba(0,0,0,.88) 84%, rgba(0,0,0,.42) 93%, transparent 100%);
+      filter: drop-shadow(0 -2px 7px rgba(160, 103, 255, .42))
+              drop-shadow(0 0 16px rgba(123, 69, 220, .22));
     }
-    .photo-note { text-align:center; color:#c9bedc; letter-spacing:.2px; }
-    @media (max-width:720px) { .hero::after { width:115vw; right:-24%; top:-6%; } .portrait { max-width:min(88vw,390px); } }
+    @media (max-width: 720px) {
+      .portrait::before { filter: blur(25px); left: -8%; right: -8%; }
+      .portrait img { filter: drop-shadow(0 -2px 5px rgba(160, 103, 255, .38)) drop-shadow(0 0 12px rgba(123, 69, 220, .20)); }
+    }
 
 </style>
 </head>
