@@ -1298,7 +1298,7 @@ footer .footer-inner span:first-child::before{content:"✦";margin-right:.5rem;c
   
 /* Living cosmos: subtle pointer-reactive stars and tactile planet artwork */
 #cosmicStarfield { position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:.82; }
-body > *:not(#cosmicStarfield):not(.planet-playground):not(#rocketCursor):not(#orbitRings):not(#debrisFx) { position:relative; z-index:2; }
+body > *:not(#cosmicStarfield):not(.planet-playground):not(#rocketCursor):not(#orbitRings):not(#debrisFx):not(#mascot):not(#ttt):not(#ttt-launch):not(#mascot-bubble):not(#mascot-live) { position:relative; z-index:2; }
 
 
 
@@ -1383,8 +1383,8 @@ main, section, .content-section, .review-section, #about.content-section, .portf
 .orbit-nav { perspective:none !important; transform-style:flat !important; transform:translateY(-50%) !important; transition:box-shadow .3s ease !important; }
 .orbit-nav:hover, .orbit-nav:focus-within { transform:translateY(-50%) !important; box-shadow:0 12px 42px rgba(0,0,0,.28), 0 0 38px rgba(148,103,255,.2); }
 .orbit-core { transform:none !important; }
-.orbit-link { transform-style:flat !important; scale:1 !important; transition:background .2s ease, color .2s ease, box-shadow .2s ease !important; }
-.orbit-link:hover, .orbit-link:focus-visible, .orbit-link.active { scale:1 !important; filter:none !important; box-shadow:0 0 0 4px rgba(183,160,255,.16), 0 0 18px rgba(167,139,250,.5); }
+.orbit-link { transform-style:flat !important; transition:background .2s ease, color .2s ease, box-shadow .2s ease !important; }
+.orbit-link:hover, .orbit-link:focus-visible, .orbit-link.active { box-shadow:0 0 0 4px rgba(183,160,255,.16), 0 0 18px rgba(167,139,250,.5); }
 .orbit-link::after { content:""; position:absolute; inset:-5px; border-radius:50%; } /* slightly larger, steady hit area */
 @media (max-width:700px) { .orbit-nav, .orbit-nav:hover, .orbit-nav:focus-within { transform:none !important; } }
 
@@ -1436,6 +1436,172 @@ main, section, .content-section, .review-section, #about.content-section, .portf
 }
 @media (prefers-reduced-motion:reduce) { .gw:hover { transform:none; } }
 
+
+/* ===== v4: mini-stars, black hole, 3D orbit menu, mascot ===== */
+.planet-spark { --size:26px; background:radial-gradient(circle,#fff 0 16%,#fff3b8 28%,rgba(255,211,107,.5) 46%,transparent 66%) !important;
+  box-shadow:none !important; }
+.planet-spark::before, .planet-spark::after { content:""; position:absolute; left:50%; top:50%; width:230%; height:2px; border-radius:2px;
+  background:linear-gradient(90deg,transparent,#fff,transparent); transform:translate(-50%,-50%); opacity:.9; pointer-events:none; }
+.planet-spark::after { transform:translate(-50%,-50%) rotate(90deg); }
+.planet-spark:hover, .planet-spark.is-dragging { filter:drop-shadow(0 0 8px rgba(255,230,160,.95)); }
+
+.distant-sun, .star { transition:scale 1.2s ease, opacity .3s ease; }
+@keyframes strain { 0%,100%{translate:0 0} 25%{translate:-2px 1px} 50%{translate:1px -2px} 75%{translate:2px 1px} }
+.is-straining { animation:strain .22s linear infinite !important; }
+.is-straining::before { box-shadow:0 0 22px 8px rgba(255,80,90,.6), 0 0 64px 22px rgba(255,50,120,.38) !important; }
+@keyframes hole-disk { from{transform:perspective(520px) rotateX(74deg) rotateZ(0deg)} to{transform:perspective(520px) rotateX(74deg) rotateZ(360deg)} }
+@keyframes revive { from{filter:brightness(4) saturate(0)} to{filter:none} }
+.is-hole { animation:none !important; background:radial-gradient(circle,transparent 36%,rgba(120,70,220,.24) 50%,transparent 70%) !important; }
+.is-hole::before { inset:24% !important; background:#000 !important; border-radius:50%;
+  box-shadow:0 0 0 2px rgba(255,205,150,.85), 0 0 22px 6px rgba(255,150,90,.55), 0 0 76px 26px rgba(130,80,255,.42) !important; }
+.is-hole::after { inset:-22% !important; opacity:1 !important; border-radius:50%;
+  background:conic-gradient(rgba(255,170,100,0),rgba(255,170,100,.6) 22%,rgba(255,240,215,.95) 36%,rgba(255,140,90,.55) 52%,rgba(150,100,255,.4) 76%,rgba(255,170,100,0)) !important;
+  -webkit-mask:radial-gradient(circle,transparent 0 36%,#000 41% 62%,transparent 68%); mask:radial-gradient(circle,transparent 0 36%,#000 41% 62%,transparent 68%);
+  animation:hole-disk 3.6s linear infinite !important; }
+.is-reviving { animation:revive 1.3s ease-out !important; }
+.bhw.bh-live { display:inline-block; will-change:transform; }
+
+/* ---- 3D orbit menu: a tiny solar system ---- */
+.orbit-nav::before, .orbit-nav::after { display:none !important; }
+.orbit-canvas { position:absolute; inset:0; width:100%; height:100%; border-radius:50%; pointer-events:none; z-index:0; }
+@keyframes core-pulse { 0%,100%{box-shadow:0 0 16px 4px rgba(255,190,128,.55),0 0 42px 12px rgba(170,120,255,.26)} 50%{box-shadow:0 0 22px 7px rgba(255,200,140,.75),0 0 54px 16px rgba(170,120,255,.36)} }
+.orbit-core { background:radial-gradient(circle at 35% 30%,#fff9dc 0,#ffd995 34%,#ff9a6b 72%,#b8454f 100%) !important; color:#3a1523 !important;
+  border-color:rgba(255,226,180,.85) !important; animation:core-pulse 5s ease-in-out infinite; z-index:1 !important; }
+.orbit-link { scale:var(--oz,1) !important; color:#fff !important; text-shadow:0 1px 3px rgba(0,0,0,.7); border-color:rgba(255,255,255,.32) !important;
+  background:radial-gradient(circle at 30% 26%,var(--p0),var(--p1) 50%,var(--p2)) !important;
+  box-shadow:inset -4px -4px 8px rgba(5,3,16,.45), inset 2px 2px 4px rgba(255,255,255,.22), 0 2px 8px rgba(0,0,0,.4); }
+.orbit-link:nth-of-type(1){--p0:#e3d7ff;--p1:#9f83dc;--p2:#3a2766}
+.orbit-link:nth-of-type(2){--p0:#d8f6ff;--p1:#5ea6cf;--p2:#1f3b66}
+.orbit-link:nth-of-type(3){--p0:#ffe3c7;--p1:#ff8f66;--p2:#7a2c3c}
+.orbit-link:nth-of-type(4){--p0:#e4ffe9;--p1:#6fc79a;--p2:#1f5a5c}
+.orbit-link:nth-of-type(5){--p0:#ffe0f3;--p1:#c26fb0;--p2:#4a2458}
+.orbit-link:nth-of-type(6){--p0:#fff4c4;--p1:#e0ad63;--p2:#5e3f73}
+.orbit-link:hover, .orbit-link:focus-visible, .orbit-link.active { opacity:1 !important; filter:brightness(1.3) saturate(1.2) !important;
+  box-shadow:inset -4px -4px 8px rgba(5,3,16,.35), 0 0 0 3px rgba(255,255,255,.28), 0 0 20px rgba(190,160,255,.9) !important; }
+.orbit-nav .orbit-link span { left:auto !important; right:calc(100% + 12px) !important; top:50% !important; transform:translate(6px,-50%) !important; }
+.orbit-nav .orbit-link:hover span, .orbit-nav .orbit-link:focus-visible span, .orbit-nav .orbit-link.active span { transform:translate(0,-50%) !important; }
+@media (max-width:720px) { .orbit-nav:not(.open) .orbit-canvas { display:none; } }
+
+/* ---- Orbit menu: clean, evenly spaced ---- */
+.orbit-nav .orbit-link { width:30px !important; height:30px !important; font-size:.64rem !important; }
+.orbit-nav .orbit-link.active:not(:hover):not(:focus-visible) span { opacity:0 !important; }
+
+/* ---- Space robot mascot ---- */
+#mascot { position:fixed; left:0; top:0; width:72px; height:72px; z-index:42; pointer-events:none; will-change:transform; }
+@keyframes robot-bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+@keyframes robot-blink { 0%,92%,100%{transform:scaleY(1)} 95%{transform:scaleY(.1)} }
+@keyframes robot-ping { 0%,100%{opacity:1} 50%{opacity:.25} }
+@keyframes robot-flame { from{transform:scaleY(.85) scaleX(.95)} to{transform:scaleY(1.15) scaleX(1.05)} }
+@keyframes robot-chest { 0%,100%{opacity:.75} 50%{opacity:1} }
+.mascot-body { position:relative; width:72px; height:90px; animation:robot-bob 3.2s ease-in-out infinite; filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)) drop-shadow(0 0 10px rgba(150,110,255,.5)); }
+.mascot-body svg { display:block; overflow:visible; }
+.robot-eyes { transition:transform .15s ease-out; }
+.robot-eye { transform-box:fill-box; transform-origin:center; animation:robot-blink 4.6s infinite; }
+.robot-ping { animation:robot-ping 1.2s ease-in-out infinite; }
+.robot-chest { animation:robot-chest 2.2s ease-in-out infinite; }
+.robot-arm { transform-box:view-box; transition:transform .38s cubic-bezier(.3,1.5,.5,1); }
+.robot-arm.l { transform-origin:20px 54px; transform:rotate(14deg); }
+.robot-arm.r { transform-origin:52px 54px; transform:rotate(-14deg); }
+.robot-flame { transform-box:view-box; transform-origin:36px 70px; opacity:.4; animation:robot-flame .16s ease-in-out infinite alternate; transition:opacity .2s ease; }
+#mascot.is-flying .robot-flame { opacity:1; }
+#mascot.is-flying .robot-arm.l { transform:rotate(112deg); }
+#mascot.is-flying .robot-arm.r { transform:rotate(-112deg); }
+#mascot.is-holding .robot-arm.l { transform:rotate(48deg); }
+#mascot.is-holding .robot-arm.r { transform:rotate(-48deg); }
+#mascot.is-holding .robot-eye { animation:none; transform:scaleY(.55); }
+#mascot.is-holding .robot-hand { fill:#fff; filter:drop-shadow(0 0 4px rgba(210,190,255,.95)); }
+.is-grabbed { border-color:rgba(205,185,255,.85) !important;
+  box-shadow:0 24px 54px rgba(0,0,0,.38), 0 0 38px rgba(167,139,250,.5) !important; }
+@media (max-width:700px) { #mascot { scale:.75; } }
+@media (prefers-reduced-motion:reduce) { .mascot-body, .robot-flame, .robot-eye { animation:none; } }
+
+/* ---- Robot speech bubble ---- */
+#mascot-bubble { position:fixed; left:0; top:0; z-index:46; width:max-content; max-width:min(272px, calc(100vw - 20px)); padding:12px 28px 9px 14px; border-radius:16px;
+  background:linear-gradient(160deg, rgba(36,27,66,.97), rgba(18,13,37,.98)); border:1px solid rgba(183,160,255,.45); color:#f1ebff;
+  font-family:inherit; font-size:.86rem; line-height:1.45; box-shadow:0 12px 34px rgba(0,0,0,.5), 0 0 26px rgba(150,110,255,.28);
+  opacity:0; transform:scale(.92); transform-origin:14px 100%; pointer-events:none;
+  transition:opacity .2s ease, transform .22s cubic-bezier(.2,1.3,.4,1); }
+#mascot-bubble[hidden] { display:none; }
+#mascot-bubble.show { opacity:1; transform:none; pointer-events:auto; }
+#mascot-bubble::after { content:""; position:absolute; bottom:-7px; left:16px; width:12px; height:12px; transform:rotate(45deg);
+  background:rgba(22,16,44,.98); border:solid rgba(183,160,255,.45); border-width:0 1px 1px 0; }
+#mascot-bubble[data-side="l"]::after { left:auto; right:16px; }
+#mascot-bubble[data-v="b"]::after { bottom:auto; top:-7px; border-width:1px 0 0 1px; }
+#mascot-bubble[data-v="b"] { transform-origin:14px 0; }
+.mb-text { margin:0; }
+.mb-rest { visibility:hidden; }
+.mb-replies { display:flex; flex-wrap:wrap; gap:6px; margin-top:9px; }
+.mb-replies:empty { display:none; }
+.mb-replies button { font:inherit; font-size:.78rem; padding:5px 11px; border-radius:999px; border:1px solid rgba(183,160,255,.5);
+  background:rgba(150,110,255,.16); color:#efe8ff; cursor:pointer; transition:background .15s ease, border-color .15s ease; }
+.mb-replies button:hover, .mb-replies button:focus-visible { background:rgba(150,110,255,.4); border-color:rgba(220,205,255,.85); outline:none; }
+.mb-x { position:absolute; top:5px; right:8px; width:20px; height:20px; padding:0; border:0; background:none; color:rgba(220,208,255,.6); font-size:1.15rem; line-height:1; cursor:pointer; }
+.mb-x:hover, .mb-x:focus-visible { color:#fff; outline:none; }
+.mb-quiet { display:block; margin-top:7px; padding:0; border:0; background:none; font:inherit; font-size:.68rem; color:rgba(220,208,255,.5); cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
+.mb-quiet:hover, .mb-quiet:focus-visible { color:#fff; outline:none; }
+.mb-quiet[hidden] { display:none; }
+#mascot-live { position:fixed; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; }
+@keyframes robot-talk { from{transform:rotate(-14deg)} to{transform:rotate(-40deg)} }
+#mascot.is-talking:not(.is-flying):not(.is-holding):not(.is-happy):not(.is-sad):not(.is-shrug) .robot-arm.r { animation:robot-talk .42s ease-in-out infinite alternate; }
+#mascot.is-talking .robot-chest { animation-duration:.5s; }
+@media (prefers-reduced-motion:reduce) { #mascot-bubble { transition:none; } #mascot.is-talking .robot-arm.r { animation:none; } }
+
+/* ---- Robot emotes ---- */
+@keyframes robot-hop { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+@keyframes robot-shrug { 0%,100%{transform:rotate(0)} 50%{transform:rotate(-6deg)} }
+#mascot.is-thinking .robot-ping { animation-duration:.25s; }
+#mascot.is-thinking .robot-chest { animation-duration:.45s; }
+#mascot.is-happy .robot-arm.l { transform:rotate(158deg); } #mascot.is-happy .robot-arm.r { transform:rotate(-158deg); }
+#mascot.is-happy .robot-eye { animation:none; transform:scaleY(.5); }
+#mascot.is-happy .mascot-body { animation:robot-hop .42s ease-in-out 4; }
+#mascot.is-sad .robot-eye { animation:none; transform:translateY(3px) scaleY(.6); fill:#a7b4ff; }
+#mascot.is-sad .robot-arm.l { transform:rotate(3deg); } #mascot.is-sad .robot-arm.r { transform:rotate(-3deg); }
+#mascot.is-shrug .robot-arm.l { transform:rotate(72deg); } #mascot.is-shrug .robot-arm.r { transform:rotate(-72deg); }
+#mascot.is-shrug .mascot-body { animation:robot-shrug .5s ease-in-out 2; }
+
+/* ---- Cosmic tic-tac-toe ---- */
+#ttt-launch[hidden], #ttt[hidden] { display:none !important; }
+@keyframes ttt-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+#ttt-launch { position:fixed; left:104px; bottom:34px; z-index:41; width:46px; height:46px; padding:0; border-radius:50%;
+  border:1px solid rgba(190,165,255,.65); background:radial-gradient(circle at 35% 30%,rgba(140,105,230,.95),rgba(30,22,60,.96));
+  display:grid; place-items:center; cursor:pointer; box-shadow:0 0 18px rgba(150,110,255,.55); animation:ttt-float 4s ease-in-out infinite;
+  transition:box-shadow .2s ease, scale .2s ease; }
+#ttt-launch:hover, #ttt-launch:focus-visible { scale:1.14; box-shadow:0 0 30px rgba(200,170,255,.95); outline:none; }
+#ttt-launch svg { width:26px; height:26px; }
+#ttt-launch span { position:absolute; left:calc(100% + 10px); white-space:nowrap; font-size:.72rem; color:#f3eeff; padding:5px 10px; border-radius:9px;
+  background:rgba(20,15,36,.94); border:1px solid rgba(190,165,255,.4); opacity:0; transform:translateX(-4px); transition:.2s ease; pointer-events:none; }
+#ttt-launch:hover span, #ttt-launch:focus-visible span { opacity:1; transform:none; }
+#ttt { position:fixed; left:20px; bottom:20px; z-index:45; width:226px; padding:12px; border-radius:20px; color:#f3eeff; font-family:inherit;
+  background:linear-gradient(160deg,rgba(36,27,66,.95),rgba(14,10,28,.97)); border:1px solid rgba(190,165,255,.45);
+  box-shadow:0 18px 50px rgba(0,0,0,.5), 0 0 40px rgba(130,90,230,.35); backdrop-filter:blur(8px);
+  opacity:0; transform:translateY(14px) scale(.96); transition:opacity .25s ease, transform .25s ease; }
+#ttt.open { opacity:1; transform:none; }
+.ttt-head { display:flex; align-items:center; justify-content:space-between; font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:#cdbcff; margin-bottom:8px; }
+.ttt-x, .ttt-new, .ttt-levels button { font:inherit; color:inherit; cursor:pointer; border:1px solid rgba(190,165,255,.35); background:rgba(255,255,255,.05); border-radius:8px; }
+.ttt-x { width:24px; height:24px; line-height:1; font-size:1rem; padding:0; }
+.ttt-levels { display:flex; gap:5px; margin-bottom:9px; }
+.ttt-levels button { flex:1; font-size:.68rem; padding:4px 0; }
+.ttt-levels button.on { background:rgba(150,110,255,.38); border-color:rgba(220,200,255,.8); color:#fff; }
+.ttt-x:hover, .ttt-new:hover, .ttt-levels button:hover { background:rgba(170,130,255,.3); }
+.ttt-board { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.ttt-cell { aspect-ratio:1; display:grid; place-items:center; padding:0; cursor:pointer; color:inherit; border-radius:12px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(190,165,255,.28); transition:background .15s ease, box-shadow .15s ease; }
+.ttt-cell:not(:disabled):hover { background:rgba(170,130,255,.22); box-shadow:0 0 14px rgba(170,130,255,.5); }
+.ttt-cell:disabled { cursor:default; }
+.mk { position:relative; display:block; width:58%; height:58%; animation:mk-pop .28s cubic-bezier(.2,1.6,.4,1); }
+.mk.x::before, .mk.x::after { content:""; position:absolute; left:50%; top:50%; width:112%; height:5px; border-radius:3px;
+  background:linear-gradient(90deg,#e2d3ff,#b08cff); box-shadow:0 0 10px rgba(190,150,255,.9); transform:translate(-50%,-50%) rotate(45deg); }
+.mk.x::after { transform:translate(-50%,-50%) rotate(-45deg); }
+.mk.o { border:5px solid #8ff1ff; border-radius:50%; box-shadow:0 0 10px rgba(120,230,255,.8), inset 0 0 8px rgba(120,230,255,.5); }
+@keyframes mk-pop { from{transform:scale(0) rotate(-40deg);opacity:0} to{transform:none;opacity:1} }
+@keyframes ttt-win { from{box-shadow:0 0 8px rgba(180,140,255,.5)} to{box-shadow:0 0 22px rgba(220,190,255,.95)} }
+.ttt-cell.win { background:rgba(160,120,255,.26); border-color:rgba(225,205,255,.95); animation:ttt-win .6s ease-in-out infinite alternate; }
+.ttt-status { margin:9px 0 6px; min-height:1.3em; text-align:center; font-size:.84rem; color:#fff; }
+.ttt-foot { display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:.68rem; color:#cdbcff; }
+.ttt-new { font-size:.7rem; padding:4px 9px; }
+@media (max-width:700px) { #ttt-launch { left:80px; bottom:30px; } #ttt { left:50%; bottom:14px; margin-left:-113px; } }
+@media (prefers-reduced-motion:reduce) { #ttt-launch, .mk, .ttt-cell.win, #mascot.is-happy .mascot-body, #mascot.is-shrug .mascot-body { animation:none; } }
+
 </style>
 
 </head>
@@ -1453,8 +1619,13 @@ main, section, .content-section, .review-section, #about.content-section, .portf
   <div class="star" data-star-id="contact" data-section="#contact" data-x="90" data-y="50" style="--size:64px" aria-hidden="true"></div>
   <div class="planet planet-gold" data-star="home" data-r="105" data-a="40" tabindex="0" role="img" aria-label="Golden planet. Drag to explore."></div>
   <div class="planet planet-ember" data-star="home" data-r="165" data-a="200" style="--size:38px" tabindex="0" role="img" aria-label="Ember planet. Drag to explore."></div>
-  <div class="planet planet-lilac" data-star="home" data-r="255" data-a="320" tabindex="0" role="img" aria-label="Lilac ringed planet. Drag to explore."><span class="planet-ring"></span></div>
-  <div class="planet planet-moon" data-star="home" data-r="335" data-a="120" tabindex="0" role="img" aria-label="Small cratered moon. Drag to explore."></div>
+  <div class="planet planet-lilac" data-star="home" data-r="275" data-a="320" tabindex="0" role="img" aria-label="Lilac ringed planet. Drag to explore."><span class="planet-ring"></span></div>
+  <div class="planet planet-spark" data-star="home" data-r="320" data-a="100" style="--size:24px" tabindex="0" role="img" aria-label="Tiny star. Drag to explore."></div>
+  <div class="planet planet-moon" data-star="home" data-r="360" data-a="150" tabindex="0" role="img" aria-label="Small cratered moon. Drag to explore."></div>
+  <div class="planet planet-spark" data-star="home" data-r="400" data-a="250" style="--size:26px" tabindex="0" role="img" aria-label="Tiny star. Drag to explore."></div>
+  <div class="planet planet-rose" data-star="home" data-r="440" data-a="20" tabindex="0" role="img" aria-label="Rose planet. Drag to explore."></div>
+  <div class="planet planet-spark" data-star="home" data-r="480" data-a="300" style="--size:28px" tabindex="0" role="img" aria-label="Tiny star. Drag to explore."></div>
+  <div class="planet planet-teal" data-star="home" data-r="520" data-a="200" tabindex="0" role="img" aria-label="Teal planet. Drag to explore."></div>
   <div class="planet planet-rose" data-star="services" data-r="100" data-a="30" tabindex="0" role="img" aria-label="Rose planet. Drag to explore."></div>
   <div class="planet planet-mint" data-star="services" data-r="160" data-a="210" tabindex="0" role="img" aria-label="Mint planet. Drag to explore."></div>
   <div class="planet planet-azure" data-star="services" data-r="225" data-a="100" tabindex="0" role="img" aria-label="Blue planet. Drag to explore."></div>
@@ -1517,6 +1688,7 @@ main, section, .content-section, .review-section, #about.content-section, .portf
 
 
   <aside class="orbit-nav" id="orbitNav" aria-label="Orbit page navigation">
+<canvas class="orbit-canvas" aria-hidden="true"></canvas>
     <div class="orbit-core" aria-hidden="true">NK</div>
     <a class="orbit-link active" href="#home" aria-label="Home" title="Home"><span>Home</span>01</a>
     <a class="orbit-link" href="#services" aria-label="Services" title="Services"><span>Services</span>02</a>
@@ -1914,7 +2086,7 @@ main, section, .content-section, .review-section, #about.content-section, .portf
     });
   });
 
-  /* ===== Solar systems: orbiting planets, collisions, explosions, re-forming ===== */
+  /* ===== Solar systems: orbits, collisions, explosions, black holes ===== */
   const field = document.querySelector('.planet-playground');
   const planetEls = [...document.querySelectorAll('.planet')];
   const starEls = [...document.querySelectorAll('[data-star-id]')];
@@ -1924,19 +2096,21 @@ main, section, .content-section, .review-section, #about.content-section, .portf
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
     const TAU = Math.PI * 2;
+    const THRESH = 5;                            // bodies crowded around one star before it collapses
     const docW = () => document.documentElement.clientWidth;
     const docH = () => Math.max(document.body.offsetHeight, innerHeight);
-    let K = 1;                                  // orbit scale for narrow screens
-    const period = r => 18 * Math.pow(Math.max(r, 50 * K) / (100 * K), 1.5);   // seconds, Kepler-ish: inner = faster
+    let K = 1;
+    const period = r => 18 * Math.pow(Math.max(r, 50 * K) / (100 * K), 1.5);
+    const nearR = s => s.r + 190 * K;
     const PAL = {
       lilac:['#e3d7ff','#9f83dc','#63468f'], orchid:['#ffd5f4','#c17bd7','#6b3c94'], moon:['#f2eaff','#aaa0c9','#5c5477'],
       azure:['#d8f6ff','#72b7d8','#31517f'], rose:['#ffe0f3','#c875b9','#573064'], gold:['#fff4c4','#e8bb75','#76518b'],
       teal:['#d7fff8','#68bdbb','#345e81'], ember:['#ffe3c7','#ff9a6b','#b8454f'], mint:['#e4ffe9','#7fd3a5','#2f7a77'],
       frost:['#f1fbff','#a9d5ee','#5b78b8'], gas:['#d9b08a','#b2785a','#ead2ad'], dusk:['#cfc6e8','#7d6fa6','#3b2f5c'],
-      sunset:['#fff0d6','#ffc58a','#d47aa0']
+      sunset:['#fff0d6','#ffc58a','#d47aa0'], spark:['#ffffff','#fff0b0','#ffd36b']
     };
 
-    const stars = starEls.map(el => ({ el, id: el.dataset.starId, x:0, y:0, r:30, over:false, home: el.classList.contains('distant-sun') }));
+    const stars = starEls.map(el => ({ el, id: el.dataset.starId, x:0, y:0, r:30, strain:false, crowdSince:0, home: el.classList.contains('distant-sun') }));
     const starById = Object.fromEntries(stars.map(s => [s.id, s]));
     const planets = planetEls.map((el, i) => {
       const type = (el.className.match(/planet-(\w+)/g) || []).map(c => c.slice(7)).find(c => PAL[c]) || 'moon';
@@ -1944,14 +2118,14 @@ main, section, .content-section, .review-section, #about.content-section, .portf
         homeStar: starById[el.dataset.star], star: starById[el.dataset.star],
         homeR: parseFloat(el.dataset.r), r: 0, rTarget: 0, angle: parseFloat(el.dataset.a) * Math.PI / 180,
         size: 40, x:0, y:0, cx:0, cy:0, mode:'orbit', over:false, adopted:false, init:false,
-        invuln:0, deadAt:0, pending:0, gx:0, gy:0 };
+        invuln:0, deadAt:0, pending:0, gx:0, gy:0, hold:false, absT:0, absStar:null, fromR:0, fromA:0, killedBy:null, sunk:false, sunkBy:null };
     });
 
-    /* ---- text rects (page coordinates) so planets and stars can go see-through over words ---- */
+    /* ---- text rects so planets/stars go see-through over words ---- */
     let textRects = [];
     function collectText(){
       textRects = [];
-      const skip = 'script,style,noscript,canvas,.planet-playground,#rocketCursor,.orbit-nav';
+      const skip = 'script,style,noscript,canvas,.planet-playground,#rocketCursor,.orbit-nav,#mascot';
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode(n){
         if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
         const p = n.parentElement;
@@ -1976,14 +2150,15 @@ main, section, .content-section, .review-section, #about.content-section, .portf
       return false;
     }
 
-    /* ---- layout: stars sit in their sections, planets orbit them ---- */
+    /* ---- layout ---- */
     function layoutStars(){
       const W = docW();
       stars.forEach(s => {
         const el = s.el, w = el.offsetWidth;
         if (s.home) {
-          const r = el.getBoundingClientRect();
+          const r = el.getBoundingClientRect(), sc = parseFloat(el.style.scale) || 1;
           s.x = r.left + r.width/2 + scrollX; s.y = r.top + r.height/2 + scrollY;
+          s.r = (r.width / sc) * .36;
         } else {
           const sec = document.querySelector(el.dataset.section);
           if (!sec) return;
@@ -1991,11 +2166,11 @@ main, section, .content-section, .review-section, #about.content-section, .portf
           s.x = parseFloat(el.dataset.x) / 100 * W;
           s.y = r.top + scrollY + parseFloat(el.dataset.y) / 100 * r.height;
           el.style.left = (s.x - w/2) + 'px'; el.style.top = (s.y - w/2) + 'px';
+          s.r = w * .36;
         }
-        s.r = w * .36;
         s.glowR = w * .55;
-        s.over = overText(s.x, s.y, s.glowR);
-        el.classList.toggle('over-text', s.over);
+        const o = overText(s.x, s.y, s.glowR);
+        if (!el.classList.contains('is-hole')) el.classList.toggle('over-text', o);
       });
     }
     function layout(){
@@ -2007,9 +2182,7 @@ main, section, .content-section, .review-section, #about.content-section, .portf
         if (!p.init) { p.r = p.rTarget = p.homeR * K; p.init = true; }
         else if (!p.adopted && p.mode !== 'drag') p.rTarget = p.homeR * K;
       });
-      collectText();
-      resizeCanvases();
-      stepPlanets(0);
+      collectText(); resizeCanvases(); stepPlanets(0);
       planets.forEach(p => p.el.classList.add('is-placed'));
     }
     let layoutRaf = 0;
@@ -2017,30 +2190,45 @@ main, section, .content-section, .review-section, #about.content-section, .portf
 
     /* ---- movement ---- */
     function render(p){ p.el.style.transform = 'translate3d(' + p.x.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px,0)'; }
+    function orbitStep(p, dt){
+      p.r += (p.rTarget - p.r) * Math.min(1, dt * 2.2);
+      if (!reduced) p.angle += TAU / period(p.r) * dt;
+      p.cx = p.star.x + Math.cos(p.angle) * p.r; p.cy = p.star.y + Math.sin(p.angle) * p.r;
+    }
     function stepPlanets(dt){
       for (const p of planets) {
         if (p.mode === 'drag') continue;
-        p.r += (p.rTarget - p.r) * Math.min(1, dt * 2.2);
-        if (!reduced) p.angle += TAU / period(p.r) * dt;
-        p.cx = p.star.x + Math.cos(p.angle) * p.r;
-        p.cy = p.star.y + Math.sin(p.angle) * p.r;
-        p.x = p.cx - p.size/2; p.y = p.cy - p.size/2;
-        render(p);
+        if (p.mode === 'absorb') {
+          const s = p.absStar;
+          if (p.absT < 0) {                       // waiting for its turn, keeps orbiting
+            orbitStep(p, dt); p.absT += dt;
+            if (p.absT >= 0) { p.fromR = Math.hypot(p.cx - s.x, p.cy - s.y); p.fromA = Math.atan2(p.cy - s.y, p.cx - s.x); p.absT = 0; }
+          } else {                                // spiral into the star, shrinking
+            p.absT += dt / 1.6;
+            const t = Math.min(1, p.absT), e = t * t, rr = p.fromR * (1 - e), a = p.fromA + e * 5.2;
+            p.cx = s.x + Math.cos(a) * rr; p.cy = s.y + Math.sin(a) * rr;
+            p.el.style.scale = (1 - .88 * e).toFixed(3);
+            if (t >= 1) finishAbsorb(p);
+          }
+        } else if (p.mode === 'dead' && p.sunk && p.sunkBy) {
+          p.cx = p.sunkBy.x; p.cy = p.sunkBy.y;   // stays inside the hole while it exists
+        } else orbitStep(p, dt);
+        p.x = p.cx - p.size/2; p.y = p.cy - p.size/2; render(p);
       }
     }
     function updateFade(){
       for (const p of planets) {
-        if (p.mode === 'dead') continue;
+        if (p.mode === 'dead' || p.mode === 'absorb') continue;
         const o = overText(p.cx, p.cy, p.ring ? p.size * .85 : p.size/2 + 3);
         if (o !== p.over) { p.over = o; p.el.classList.toggle('over-text', o); }
       }
     }
 
-    /* ---- debris + shock rings (viewport canvas, page-space particles) ---- */
+    /* ---- debris + shock rings ---- */
     const parts = [], flashes = [];
-    let fxCtx = fxCv && fxCv.getContext('2d'), rgCtx = ringsCv && ringsCv.getContext('2d'), dpr = 1;
+    const fxCtx = fxCv && fxCv.getContext('2d'), rgCtx = ringsCv && ringsCv.getContext('2d');
     function resizeCanvases(){
-      dpr = Math.min(devicePixelRatio || 1, 2);
+      const dpr = Math.min(devicePixelRatio || 1, 2);
       [ringsCv, fxCv].forEach(c => { if (!c) return; c.width = Math.round(innerWidth * dpr); c.height = Math.round(innerHeight * dpr); });
       if (fxCtx) fxCtx.setTransform(dpr,0,0,dpr,0,0);
       if (rgCtx) rgCtx.setTransform(dpr,0,0,dpr,0,0);
@@ -2051,26 +2239,27 @@ main, section, .content-section, .review-section, #about.content-section, .portf
       for (let i = 0; i < n; i++) {
         const a = Math.random() * TAU, sp = 70 + Math.random() * 300;
         parts.push({ owner:p, x:p.cx, y:p.cy, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp,
-          r:1.3 + Math.random() * Math.max(2.2, p.size * .075), c:pal[(Math.random()*3)|0],
-          born:now, delay:2.3 + Math.random() * 1.8, spin:Math.random() });
+          r:1.3 + Math.random() * Math.max(2.2, p.size * .075), c:pal[(Math.random()*3)|0], born:now, delay:2.3 + Math.random() * 1.8 });
       }
       flashes.push({ x:p.cx, y:p.cy, r:p.size * .5, born:now, hot });
     }
     function stepParts(dt, now){
       for (let i = parts.length - 1; i >= 0; i--) {
         const q = parts[i], o = q.owner, age = (now - q.born) / 1000;
-        if (age < q.delay) {
-          const f = Math.pow(.2, dt); q.vx *= f; q.vy *= f;     // fly outward, then drift
-        } else {                                                 // spring back to where the planet will re-form
-          const dx = o.cx - q.x, dy = o.cy - q.y, S = 16, D = 8;
+        if (age < q.delay) { const f = Math.pow(.2, dt); q.vx *= f; q.vy *= f; }
+        else {
+          const tx = o.sunk ? o.sunkBy.x : o.cx, ty = o.sunk ? o.sunkBy.y : o.cy;
+          const dx = tx - q.x, dy = ty - q.y, S = 16, D = 8, lim = o.sunk ? o.sunkBy.r * .8 : 7;
           q.vx += (dx * S - q.vx * D) * dt; q.vy += (dy * S - q.vy * D) * dt;
-          if (dx*dx + dy*dy < 49) { parts.splice(i,1); o.pending--; continue; }
+          if (dx*dx + dy*dy < lim * lim) { parts.splice(i,1); o.pending--; continue; }
         }
         q.x += q.vx * dt; q.y += q.vy * dt;
       }
       for (const p of planets) {
-        if (p.mode !== 'dead') continue;
+        if (p.mode !== 'dead' || p.hold) continue;
         if (p.pending <= 0 || (now - p.deadAt) > 8500) {
+          const bh = holeFor(p, null);
+          if (bh) { sinkInto(p, bh, now); continue; }          // a hole now sits at its home: keep it away until the hole ends
           for (let i = parts.length - 1; i >= 0; i--) if (parts[i].owner === p) parts.splice(i,1);
           reform(p, now);
         }
@@ -2090,8 +2279,7 @@ main, section, .content-section, .review-section, #about.content-section, .portf
       }
       for (const q of parts) {
         const y = q.y - sy; if (y < -20 || y > innerHeight + 20) continue;
-        const age = (now - q.born) / 1000, a = age < q.delay ? 1 : .9;
-        fxCtx.globalAlpha = a;
+        fxCtx.globalAlpha = .95;
         fxCtx.beginPath(); fxCtx.arc(q.x - sx, y, q.r, 0, TAU); fxCtx.fillStyle = q.c; fxCtx.fill();
         fxCtx.beginPath(); fxCtx.arc(q.x - sx - q.r*.25, y - q.r*.25, q.r * .45, 0, TAU); fxCtx.fillStyle = 'rgba(255,255,255,.55)'; fxCtx.fill();
       }
@@ -2111,26 +2299,42 @@ main, section, .content-section, .review-section, #about.content-section, .portf
     }
 
     /* ---- collisions ---- */
-    function explode(p, hot, now){
-      if (p.mode === 'dead') return;
-      p.mode = 'dead'; p.deadAt = now;
+    const kills = [];                                   // planets destroyed by a star (feeds the black-hole counter)
+    function explode(p, hot, now, by){
+      if (p.mode === 'dead' || p.mode === 'absorb') return;
+      const bh = holeFor(p, by);                       // a live black hole owns this death (hit it, or it is this body's home star)
+      p.mode = 'dead'; p.deadAt = now; p.killedBy = by || null; p.sunk = false; p.sunkBy = null;
+      if (by && !bh) kills.push({ t: now, s: by, p });
       p.el.classList.add('is-destroyed'); p.el.classList.remove('over-text', 'is-dragging'); p.over = false;
       burst(p, hot);
-      p.star = p.homeStar; p.r = p.rTarget = p.homeR * K; p.adopted = false;   // ghost keeps orbiting its home star
+      p.star = p.homeStar; p.r = p.rTarget = p.homeR * K; p.adopted = false;
+      if (bh) sinkInto(p, bh, now);                    // debris spirals into the hole; no re-forming while it exists
+      if (by) emit('lost', { hole: !!bh });
+    }
+    function holeFor(p, by){
+      if (!hole || hole.state === 'ending') return null;
+      if (by === hole.s || p.homeStar === hole.s) return hole;
+      return Math.hypot(p.cx - hole.s.x, p.cy - hole.s.y) < nearR(hole.s) * 1.4 ? hole : null;   // died in its pull (e.g. planet-vs-planet beside it)
+    }
+    function sinkInto(p, h, now){
+      p.hold = true; p.sunk = true; p.sunkBy = h.s;
+      for (const q of parts) if (q.owner === p && q.delay > 1.2 + (now - q.born) / 1000) q.delay = (now - q.born) / 1000 + .1;
+      if (h.absorbed.indexOf(p) < 0) h.absorbed.push(p);
+      for (const q of parts) if (q.owner === p) q.delay = (now - q.born) / 1000 + .1 + Math.random() * .7;
     }
     function reform(p, now){
-      p.mode = 'orbit'; p.invuln = now + 1800;
+      p.mode = 'orbit'; p.invuln = now + 1800; p.killedBy = null; p.sunk = false; p.sunkBy = null;
+      p.star = p.homeStar; p.r = p.rTarget = p.homeR * K;                     // re-form on its own home orbit (a freed body was parked in the hole)
+      p.cx = p.star.x + Math.cos(p.angle) * p.r; p.cy = p.star.y + Math.sin(p.angle) * p.r;
       p.el.classList.remove('is-destroyed'); p.el.classList.add('is-reforming');
       setTimeout(() => p.el.classList.remove('is-reforming'), 900);
       flashes.push({ x:p.cx, y:p.cy, r:p.size * .35, born:now, hot:false });
     }
     function collisions(now){
-      const live = planets.filter(p => p.mode !== 'dead' && now >= p.invuln);
-      for (const p of live) {
-        for (const s of stars) {
-          const dx = p.cx - s.x, dy = p.cy - s.y, lim = s.r + p.size * .34;
-          if (dx*dx + dy*dy < lim*lim) { explode(p, true, now); break; }
-        }
+      const live = planets.filter(p => p.mode !== 'dead' && p.mode !== 'absorb' && now >= p.invuln);
+      for (const p of live) for (const s of stars) {
+        const dx = p.cx - s.x, dy = p.cy - s.y, lim = s.r + p.size * .34;
+        if (dx*dx + dy*dy < lim*lim) { explode(p, true, now, s); break; }
       }
       for (let i = 0; i < live.length; i++) for (let j = i + 1; j < live.length; j++) {
         const a = live[i], b = live[j];
@@ -2145,19 +2349,137 @@ main, section, .content-section, .review-section, #about.content-section, .portf
       }
     }
 
+    /* ---- black hole: too many bodies crowded around one star ---- */
+    const emit = (type, extra) => window.dispatchEvent(new CustomEvent('cosmos', { detail: Object.assign({ type }, extra || {}) }));   // lets the robot react
+    let hole = null, wordsReady = false;
+    function ensureWords(){
+      if (wordsReady) return; wordsReady = true;
+      const skip = 'script,style,noscript,canvas,iframe,textarea,.planet-playground,.orbit-nav,#rocketCursor,#mascot,.gw,.bhw';
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode(n){
+        if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        const p = n.parentElement; return (!p || p.closest(skip)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+      }});
+      const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(n => {
+        const frag = document.createDocumentFragment();
+        n.nodeValue.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          const s = document.createElement('span'); s.className = 'bhw'; s.textContent = part; frag.appendChild(s);
+        });
+        n.parentNode.replaceChild(frag, n);
+      });
+    }
+    function checkCrowd(now){
+      if (hole) return;
+      for (let i = kills.length - 1; i >= 0; i--) if (now - kills[i].t > 30000) kills.splice(i, 1);
+      for (const s of stars) {
+        const lim = nearR(s);
+        const near = planets.filter(p => (p.mode === 'orbit' || p.mode === 'drag') && Math.hypot(p.cx - s.x, p.cy - s.y) < lim);
+        const nearSet = new Set(near);
+        const fed = new Set(kills.filter(k => k.s === s && !nearSet.has(k.p)).map(k => k.p)).size;   // destroyed in the last 30s
+        const load = near.length + fed;                                                              // either route counts
+        const strain = load >= THRESH - 1;
+        if (strain !== s.strain) { s.strain = strain; s.el.classList.toggle('is-straining', strain); }
+        if (load >= THRESH) {
+          if (!s.crowdSince) s.crowdSince = now; else if (now - s.crowdSince > 600) { startHole(s, near, now); return; }
+        } else s.crowdSince = 0;
+      }
+    }
+    function startHole(s, near, now){
+      s.crowdSince = 0; s.strain = true; s.el.classList.add('is-straining');           // the star shudders while it feeds
+      // bodies close to the star: re-base their orbit on THIS star at their current spot so nothing jumps, then spiral in
+      near.forEach((p, i) => {
+        p.el.classList.remove('is-dragging', 'over-text'); p.over = false;
+        const dx = p.cx - s.x, dy = p.cy - s.y;
+        p.star = s; p.angle = Math.atan2(dy, dx); p.r = p.rTarget = Math.hypot(dx, dy);
+        p.mode = 'absorb'; p.absStar = s; p.absT = -(i * .16); p.el.style.transition = 'none';
+      });
+      // planets this star already destroyed: their debris is drawn into the star instead of re-forming
+      const sunk = [...new Set(kills.filter(k => k.s === s).map(k => k.p).concat(planets.filter(p => p.homeStar === s)))].filter(p => p.mode === 'dead' && !p.hold);
+      sunk.forEach(p => {
+        p.hold = true; p.sunk = true; p.sunkBy = s;
+        parts.forEach(q => { if (q.owner === p) q.delay = (now - q.born) / 1000 + .15 + Math.random() * .9; });
+      });
+      for (let i = kills.length - 1; i >= 0; i--) if (kills[i].s === s) kills.splice(i, 1);
+      ensureWords();
+      const words = [...document.querySelectorAll('.gw, .bhw')].map(el => {
+        const r = el.getBoundingClientRect(), cx = r.left + r.width/2 + scrollX, cy = r.top + r.height/2 + scrollY;
+        const dx = cx - s.x, dy = cy - s.y, d = Math.hypot(dx, dy);
+        return { el, cx, cy, d, a0: Math.atan2(dy, dx), start: d / 70 + Math.random() * 1.4, live:false };
+      });
+      // 'feeding' first (bodies are swallowed), then the star collapses into a black hole
+      hole = { s, tStart: now, t0: 0, state:'feeding', endAt:0, idleAt:0, absorbed: near.concat(sunk), words };
+      emit('hole');
+    }
+    function finishAbsorb(p){
+      flashes.push({ x:p.absStar.x, y:p.absStar.y, r:p.absStar.r * .55, born:performance.now(), hot:true });
+      p.mode = 'dead'; p.hold = true; p.pending = 0; p.deadAt = performance.now();
+      p.el.classList.add('is-destroyed'); p.el.style.scale = ''; p.el.style.transition = '';
+      p.star = p.homeStar; p.r = p.rTarget = p.homeR * K; p.adopted = false;
+    }
+    function endHole(now){
+      const h = hole, s = h.s; h.state = 'ending'; h.endAt = now;
+      emit('hole-end');
+      s.el.classList.remove('is-hole'); s.el.style.scale = ''; s.el.classList.add('is-reviving');
+      setTimeout(() => s.el.classList.remove('is-reviving'), 1400);
+      flashes.push({ x:s.x, y:s.y, r:s.r * 1.4, born:now, hot:true });
+      for (let i = kills.length - 1; i >= 0; i--) if (kills[i].s === s) kills.splice(i, 1);
+      h.absorbed.forEach((p, i) => setTimeout(() => { p.hold = false; }, 1500 + i * 220));
+    }
+    function stepHole(now){
+      if (!hole) return;
+      const h = hole;
+      if (h.state === 'feeding') {
+        const s = h.s;
+        const busy = planets.some(p => p.mode === 'absorb' && p.absStar === s) || parts.some(q => q.owner.sunkBy === s);
+        if (busy && now - h.tStart < 6000) { h.idleAt = 0; return; }
+        if (!h.idleAt) h.idleAt = now;
+        if (now - h.idleAt < 350) return;
+        h.state = 'active'; h.t0 = now;                                  // everything is inside: collapse
+        s.strain = false; s.el.classList.remove('is-straining');
+        s.el.classList.add('is-hole'); s.el.classList.remove('over-text'); s.el.style.scale = '1.4';
+        flashes.push({ x:s.x, y:s.y, r:s.r * 1.2, born:now, hot:true });
+        return;
+      }
+      const t = (now - h.t0) / 1000;
+      if (h.state === 'active' && t > 38) endHole(now);
+      let endK = 0;
+      if (h.state === 'ending') {
+        endK = clamp((now - h.endAt) / 3000, 0, 1);
+        if (now - h.endAt > 3400) {
+          h.words.forEach(w => { w.el.style.transform = ''; w.el.style.opacity = ''; w.el.classList.remove('bh-live'); });
+          hole = null; return;
+        }
+      }
+      const wt = ((h.state === 'ending' ? h.endAt : now) - h.t0) / 1000 - .5;
+      const vy0 = scrollY - 500, vy1 = scrollY + innerHeight + 500, S = h.s, keep = 1 - (1 - Math.pow(1 - endK, 2));
+      for (const w of h.words) {
+        if (w.cy < vy0 || w.cy > vy1) continue;
+        let p = clamp((wt - w.start) / 5.5, 0, 1);
+        if (h.state === 'ending') p *= 1 - endK * endK * (3 - 2 * endK);
+        const e = p * p;
+        if (e < .0005) { if (w.live) { w.el.style.transform = ''; w.el.style.opacity = ''; w.live = false; } continue; }
+        if (!w.live) { w.el.classList.add('bh-live'); w.live = true; }
+        const a = w.a0 + e * 3.4, rr = w.d * (1 - e);
+        const dx = S.x + Math.cos(a) * rr - w.cx, dy = S.y + Math.sin(a) * rr - w.cy;
+        w.el.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) rotate(' + (e * 420).toFixed(0) + 'deg) scale(' + (1 - .88 * e).toFixed(3) + ')';
+        w.el.style.opacity = (1 - e * .96).toFixed(2);
+      }
+    }
+
     /* ---- main loop ---- */
-    let last = performance.now(), fadeTick = 0;
+    let last = performance.now(), frame = 0;
     function tick(now){
-      const dt = Math.min(.05, (now - last) / 1000); last = now;
-      stepPlanets(dt);
-      collisions(now);
-      stepParts(dt, now);
-      if ((fadeTick = (fadeTick + 1) % 2) === 0) updateFade();
+      const dt = Math.min(.05, (now - last) / 1000); last = now; frame++;
+      stepPlanets(dt); collisions(now); stepParts(dt, now); stepHole(now);
+      if (frame % 2 === 0) updateFade();
+      if (frame % 6 === 0) checkCrowd(now);
       drawRings(); drawFx(now);
       requestAnimationFrame(tick);
     }
 
-    /* ---- dragging: drop a planet anywhere and the nearest star captures it into an orbit ---- */
+    /* ---- dragging: the nearest star captures a dropped planet into orbit ---- */
     function adopt(p){
       let best = null, bd = Infinity;
       for (const s of stars) { const d = Math.hypot(p.cx - s.x, p.cy - s.y); if (d < bd) { bd = d; best = s; } }
@@ -2172,8 +2494,9 @@ main, section, .content-section, .review-section, #about.content-section, .portf
         p.x = p.cx - p.size/2; p.y = p.cy - p.size/2; render(p);
       };
       el.addEventListener('pointerdown', e => {
-        if (p.mode === 'dead' || (e.button !== 0 && e.pointerType === 'mouse')) return;
+        if (p.mode === 'dead' || p.mode === 'absorb' || (e.button !== 0 && e.pointerType === 'mouse')) return;
         e.preventDefault(); p.mode = 'drag'; el.classList.add('is-dragging');
+        emit('grab');
         p.gx = e.pageX - p.cx; p.gy = e.pageY - p.cy;
         try { el.setPointerCapture(e.pointerId); } catch(_e) {}
       });
@@ -2198,7 +2521,382 @@ main, section, .content-section, .review-section, #about.content-section, .portf
     layout();
     requestAnimationFrame(t => { last = t; requestAnimationFrame(tick); });
   }
+
 })();
+</script>
+<div id="mascot" aria-hidden="true"><div class="mascot-body"><svg viewBox="0 0 72 90" width="72" height="90" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="rbMetal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1edff"/><stop offset="1" stop-color="#9388d0"/></linearGradient>
+<linearGradient id="rbDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7d70c4"/><stop offset="1" stop-color="#4b3f8f"/></linearGradient>
+<radialGradient id="rbFlame" cx=".5" cy=".2" r=".9"><stop offset="0" stop-color="#fff6d6"/><stop offset=".45" stop-color="#ffb36b"/><stop offset="1" stop-color="#ff5fa2" stop-opacity="0"/></radialGradient>
+</defs>
+<ellipse class="robot-flame" cx="36" cy="79" rx="7" ry="11" fill="url(#rbFlame)"/>
+<g class="robot-arm l"><rect x="17" y="51" width="6" height="17" rx="3" fill="url(#rbDark)"/><circle class="robot-hand" cx="20" cy="70" r="4.4" fill="#e6defc" stroke="#6e60b8" stroke-width="1.2"/></g>
+<g class="robot-arm r"><rect x="49" y="51" width="6" height="17" rx="3" fill="url(#rbDark)"/><circle class="robot-hand" cx="52" cy="70" r="4.4" fill="#e6defc" stroke="#6e60b8" stroke-width="1.2"/></g>
+<rect x="22" y="47" width="28" height="23" rx="9" fill="url(#rbMetal)" stroke="#6e60b8" stroke-width="1.2"/>
+<rect x="27" y="53" width="18" height="11" rx="5" fill="#2a2150"/>
+<circle class="robot-chest" cx="36" cy="58.5" r="3.4" fill="#c9a8ff"/>
+<rect x="31" y="43" width="10" height="6" rx="2" fill="url(#rbDark)"/>
+<circle cx="13.5" cy="28" r="4.5" fill="url(#rbDark)" stroke="#6e60b8" stroke-width="1"/><circle cx="58.5" cy="28" r="4.5" fill="url(#rbDark)" stroke="#6e60b8" stroke-width="1"/>
+<line x1="36" y1="12" x2="36" y2="5" stroke="#8f84c9" stroke-width="2" stroke-linecap="round"/>
+<circle class="robot-ping" cx="36" cy="4" r="3.2" fill="#ff8fb8"/>
+<rect x="16" y="12" width="40" height="33" rx="14" fill="url(#rbMetal)" stroke="#6e60b8" stroke-width="1.2"/>
+<rect x="20.5" y="17" width="31" height="21" rx="9" fill="#0b0818"/>
+<g class="robot-eyes"><ellipse class="robot-eye" cx="29.5" cy="27.5" rx="3.3" ry="4.2" fill="#8ff1ff"/><ellipse class="robot-eye" cx="42.5" cy="27.5" rx="3.3" ry="4.2" fill="#8ff1ff"/></g>
+<path d="M32 34.2 Q36 36.4 40 34.2" fill="none" stroke="#8ff1ff" stroke-width="1.3" stroke-linecap="round" opacity=".7"/>
+<path d="M24 19.5 Q28 17.8 32 19" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity=".35"/>
+</svg></div></div><button id="ttt-launch" type="button" aria-label="Play tic-tac-toe with the space robot"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M8.5 3v18M15.5 3v18M3 8.5h18M3 15.5h18" stroke="#d9c6ff" stroke-width="1.5"/><path d="M4.6 4.6l2.2 2.2M6.8 4.6L4.6 6.8" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="1.7" stroke="#8ff1ff" stroke-width="1.4"/></svg><span>Play with the robot</span></button><div id="ttt" role="dialog" aria-label="Cosmic tic-tac-toe" hidden><div class="ttt-head"><span>Cosmic Tic-Tac-Toe</span><button class="ttt-x" type="button" aria-label="Close game">&times;</button></div><div class="ttt-levels" role="group" aria-label="Robot difficulty"><button type="button" data-lv="0">Chill</button><button type="button" data-lv="1" class="on">Normal</button><button type="button" data-lv="2">Genius</button></div><div class="ttt-board"><button class="ttt-cell" type="button" aria-label="Row 1, column 1, empty"></button><button class="ttt-cell" type="button" aria-label="Row 1, column 2, empty"></button><button class="ttt-cell" type="button" aria-label="Row 1, column 3, empty"></button><button class="ttt-cell" type="button" aria-label="Row 2, column 1, empty"></button><button class="ttt-cell" type="button" aria-label="Row 2, column 2, empty"></button><button class="ttt-cell" type="button" aria-label="Row 2, column 3, empty"></button><button class="ttt-cell" type="button" aria-label="Row 3, column 1, empty"></button><button class="ttt-cell" type="button" aria-label="Row 3, column 2, empty"></button><button class="ttt-cell" type="button" aria-label="Row 3, column 3, empty"></button></div><div class="ttt-status" aria-live="polite"></div><div class="ttt-foot"><span class="ttt-score">You 0 · Robot 0 · Draws 0</span><button class="ttt-new" type="button">New game</button></div></div>
+<script>
+(function(){
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ===== 3D orbit menu: the six links ride one tilted ring, evenly spaced, so they never crowd ===== */
+  (function(){
+    const nav = document.getElementById('orbitNav'); if (!nav) return;
+    const cv = nav.querySelector('.orbit-canvas'), links = [...nav.querySelectorAll('.orbit-link')];
+    if (!cv || !links.length) return;
+    const ctx = cv.getContext('2d');
+    const MAIN = {R:70, inc:.20, node:.35};
+    const DECOR = [{R:38, inc:-.45, node:1.3, w:.55}, {R:55, inc:.55, node:2.4, w:.38}];   // decorative rings with tiny moons
+    const CAM = .98, D = 560, N = links.length, STEP = Math.PI * 2 / N, W0 = .26;
+    let spin = .5, moons = DECOR.map((_, i) => i * 2.1), speed = 1, last = performance.now(), frames = 0, visible = true, cssW = 0;
+    function proj(o, a, f){
+      let x = o.R*Math.cos(a), y = 0, z = o.R*Math.sin(a), t;
+      t = y*Math.cos(o.inc) - z*Math.sin(o.inc); z = y*Math.sin(o.inc) + z*Math.cos(o.inc); y = t;
+      t = x*Math.cos(o.node) + z*Math.sin(o.node); z = -x*Math.sin(o.node) + z*Math.cos(o.node); x = t;
+      t = y*Math.cos(CAM) - z*Math.sin(CAM); z = y*Math.sin(CAM) + z*Math.cos(CAM); y = t;
+      const s = D / (D - z); return { x: x*s*f, y: y*s*f, d: clamp(z / 70, -1, 1) };
+    }
+    function size(){
+      const w = nav.offsetWidth; if (!w) return; cssW = w; const dpr = Math.min(devicePixelRatio || 1, 2);
+      cv.width = cv.height = Math.round(w * dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    function ring(o, f, c, base, gain){
+      let prev = proj(o, 0, f);
+      for (let k = 1; k <= 72; k++) {
+        const cur = proj(o, k / 72 * Math.PI * 2, f);
+        ctx.strokeStyle = 'rgba(190,165,255,' + (base + gain * (cur.d + 1) / 2).toFixed(3) + ')'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(c + prev.x, c + prev.y); ctx.lineTo(c + cur.x, c + cur.y); ctx.stroke(); prev = cur;
+      }
+    }
+    function frame(now){
+      const dt = Math.min(.05, (now - last) / 1000); last = now; frames++;
+      if (frames % 20 === 1) { visible = getComputedStyle(links[0]).display !== 'none'; if (visible && (!cssW || cssW !== nav.offsetWidth)) size(); }
+      if (visible && cssW) {
+        const hov = nav.matches(':hover') || nav.matches(':focus-within');
+        speed += ((hov ? 0 : 1) - speed) * Math.min(1, dt * (hov ? 9 : 2.5));   // eases to a stop under the cursor so clicking is steady
+        const f = cssW / 194, c = cssW / 2;
+        if (!reduced) { spin += W0 * speed * dt; moons = moons.map((m, i) => m + DECOR[i].w * dt); }
+        ctx.clearRect(0, 0, cssW, cssW);
+        DECOR.forEach((o, i) => {
+          ring(o, f, c, .05, .1);
+          const q = proj(o, moons[i], f);
+          ctx.fillStyle = 'rgba(235,225,255,' + (.45 + .4 * (q.d + 1) / 2).toFixed(2) + ')';
+          ctx.beginPath(); ctx.arc(c + q.x, c + q.y, 2.1, 0, Math.PI * 2); ctx.fill();
+        });
+        ring(MAIN, f, c, .14, .3);
+        links.forEach((l, i) => {
+          const q = proj(MAIN, spin + i * STEP, f);
+          l.style.setProperty('--orbit-x', q.x.toFixed(1) + 'px'); l.style.setProperty('--orbit-y', q.y.toFixed(1) + 'px');
+          l.style.setProperty('--oz', (.86 + .22 * (q.d + 1) / 2).toFixed(3));
+          l.style.zIndex = q.d > 0 ? 4 : 0; l.style.opacity = (.7 + .3 * (q.d + 1) / 2).toFixed(2);
+        });
+      }
+      requestAnimationFrame(frame);
+    }
+    addEventListener('resize', () => { cssW = 0; });
+    nav.addEventListener('click', () => setTimeout(() => { cssW = 0; }, 50));
+    requestAnimationFrame(frame);
+  })();
+
+  /* ===== Space robot: flies to the card under your cursor and grabs its frame ===== */
+  (function(){
+    const m = document.getElementById('mascot'); if (!m) return;
+    const body = m.querySelector('.mascot-body'), eyes = m.querySelector('.robot-eyes');
+    const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
+    let x = -80, y = innerHeight - 112, vx = 0, vy = 0, hover = null, hoverSince = 0, lastOver = 0, grabbed = null, holding = false, px = innerWidth / 2, py = innerHeight / 2;
+    const sway = new Map();
+    const ttt = document.getElementById('ttt'), launch = document.getElementById('ttt-launch');
+    let gameOpen = false, thinking = false;
+    const idleSpot = () => {
+      if (gameOpen && ttt) {                      // while playing, the robot sits beside the board
+        const r = ttt.getBoundingClientRect();
+        return innerWidth < 700 ? { x: innerWidth / 2, y: Math.max(60, r.top - 46) } : { x: r.right + 54, y: r.top + r.height * .5 };
+      }
+      return { x: innerWidth < 700 ? 40 : 56, y: innerHeight - (innerWidth < 700 ? 150 : 116) };
+    };
+    function emote(cls, ms){ m.classList.add(cls); setTimeout(() => m.classList.remove(cls), ms); }
+    /* ---- Talking: a speech bubble with short chats, quick replies and context-aware lines ---- */
+    const bub = document.createElement('div');
+    bub.id = 'mascot-bubble'; bub.hidden = true;
+    bub.innerHTML = '<p class="mb-text"><span class="mb-typed"></span><span class="mb-rest"></span></p><div class="mb-replies"></div>' +
+      '<button type="button" class="mb-quiet">Quiet mode</button><button type="button" class="mb-x" aria-label="Dismiss">&times;</button>';
+    const live = document.createElement('div');
+    live.id = 'mascot-live'; live.setAttribute('aria-live', 'polite'); live.setAttribute('role', 'status');
+    document.body.appendChild(bub); document.body.appendChild(live);
+    const mbTyped = bub.querySelector('.mb-typed'), mbRest = bub.querySelector('.mb-rest'), mbReplies = bub.querySelector('.mb-replies'), mbQuiet = bub.querySelector('.mb-quiet');
+    const rnd = a => a[(Math.random() * a.length) | 0];
+    let quiet = false; try { quiet = sessionStorage.getItem('nk-robot-quiet') === '1'; } catch(_e) {}
+    let bubT = 0, typeT = 0, busy = false, lastTalk = -1e9, lastActive = performance.now(), grabHinted = false, spoke = {};
+    const quietFor = ms => performance.now() - lastTalk < ms;
+    function hideBubble(){
+      clearTimeout(bubT); clearInterval(typeT); busy = false; lastTalk = performance.now();
+      bub.classList.remove('show'); m.classList.remove('is-talking');
+      setTimeout(() => { if (!busy) bub.hidden = true; }, 240);
+    }
+    function goTo(sel, href){
+      const t = sel && document.querySelector(sel);
+      if (t) t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+      else if (href) location.href = href;
+    }
+    function act(r){
+      if (r.go || r.href) goTo(r.go, r.href);
+      if (r.play && launch) launch.click();
+      if (r.r) { emote(r.emote || 'is-happy', 900); speak(r.r, { force:true }); } else hideBubble();
+    }
+    function place(){
+      if (bub.hidden) return;
+      const w = bub.offsetWidth, h = bub.offsetHeight, pad = 10;
+      let left = x + 4, top = y - 44 - h, side = 'r', below = false;
+      if (left + w > innerWidth - pad) { left = x - 4 - w; side = 'l'; }
+      left = clamp(left, pad, Math.max(pad, innerWidth - pad - w));
+      if (top < pad) { top = y + 58; below = true; }
+      top = Math.min(top, innerHeight - pad - h);
+      bub.style.translate = left.toFixed(0) + 'px ' + top.toFixed(0) + 'px';
+      bub.dataset.side = side; bub.dataset.v = below ? 'b' : 't';
+    }
+    function speak(msg, o){
+      o = o || {};
+      if (typeof msg === 'string') msg = { t: msg };
+      if (!o.force && (quiet || busy || document.hidden || gameOpen)) return false;
+      clearTimeout(bubT); clearInterval(typeT); busy = true; lastTalk = performance.now();
+      mbReplies.textContent = '';
+      (msg.replies || []).forEach(r => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = r.l;
+        b.addEventListener('click', () => act(r)); mbReplies.appendChild(b);
+      });
+      mbQuiet.hidden = !!o.force;
+      live.textContent = msg.t;
+      const full = msg.t; let i = reduced ? full.length : 0;
+      const paint = () => { mbTyped.textContent = full.slice(0, i); mbRest.textContent = full.slice(i); };
+      paint();
+      bub.hidden = false; void bub.offsetWidth; bub.classList.add('show'); m.classList.add('is-talking'); place();
+      if (!reduced) typeT = setInterval(() => { i++; paint(); if (i >= full.length) clearInterval(typeT); }, 24);
+      const dur = (msg.replies && msg.replies.length ? 16000 : clamp(3200 + full.length * 55, 4500, 9500)) + (reduced ? 0 : full.length * 24);
+      bubT = setTimeout(hideBubble, dur);
+      return true;
+    }
+    bub.addEventListener('pointerenter', () => clearTimeout(bubT));
+    bub.addEventListener('pointerleave', () => { if (busy) { clearTimeout(bubT); bubT = setTimeout(hideBubble, 3500); } });
+    bub.querySelector('.mb-x').addEventListener('click', hideBubble);
+    mbQuiet.addEventListener('click', () => {
+      quiet = true; try { sessionStorage.setItem('nk-robot-quiet', '1'); } catch(_e) {}
+      emote('is-shrug', 900); speak("Okay, I'll keep quiet. I'm still here if you need me.", { force:true });
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && busy && !gameOpen) hideBubble(); });
+    ['pointermove', 'pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(ev => addEventListener(ev, () => { lastActive = performance.now(); }, { passive:true }));
+
+    const sampleHref = (document.querySelector('a[href="work.html"]') || {}).getAttribute ? 'work.html' : null;
+    const hasWork = !!document.querySelector('#work');
+    const SAMPLES = { l:'Show me the samples', go: hasWork ? '#work' : '.portfolio-page-grid', href: sampleHref };
+    const GREET = [
+      { t:"Hi there! How was your day?", replies:[
+        { l:'Pretty good', r:"Love that. Let's keep it going. Have a look around!" },
+        { l:'Rough one', emote:'is-sad', r:"Sorry to hear that. Take a breath. Then drag a planet into a star. It's oddly satisfying." },
+        { l:'Just browsing', r:"Perfect. Browse away. I'll hover nearby." } ] },
+      { t:"Welcome aboard, space traveler! What are you up to today?", replies:[
+        { l:'Looking for a writer', r:{ t:"You're in the right galaxy! Want to see what Nafiz has written?", replies:[ SAMPLES, { l:'Later' } ] } },
+        { l:'Just exploring', r:"Great choice. Try dragging a planet. Careful around the stars, though." } ] }
+    ];
+    const IDLE = [
+      { t:"Still there? How's your day going?", replies:[ { l:'Good!', r:"Glad to hear it!" }, { l:'Busy', r:"I get it. I'll be quiet and let you read." } ] },
+      { t:"Psst. Try dragging a planet into a star. Go on." },
+      { t:"Want to play a quick game of tic-tac-toe?", replies:[ { l:"Let's play", play:true }, { l:'Maybe later' } ] },
+      { t:"Fun fact: if too many planets crowd one star, it collapses into a black hole." },
+      { t:"What are you working on today?", replies:[ { l:'A new project', r:"Exciting! Good copy can make a project shine." }, { l:'Nothing much', r:"Then you've got time to look around. Take it slow." } ] }
+    ];
+    const GRAB = ["Got it! Hold still…", "Ooh, this one looks good.", "I've got the frame. Nice and steady.", "Reading this one with you."];
+    const SECT = [
+      ['#services', ["These are the kinds of copy Nafiz writes. Hover a card and I might grab it!", "Emails, sales pages, landing pages. The good stuff."]],
+      ['#work', [{ t:"Sample work! Real writing, ready to read.", replies: sampleHref && !document.querySelector('.portfolio-page-grid') ? [ { l:'See all samples', href:'work.html' } ] : [] }]],
+      ['#about', ["Curious who's behind the words? That's this part."]],
+      ['#reviews', ["People say nice things here. Worth a read."]],
+      ['#contact', [{ t:"Ready to work together? Say hi. I'll cheer from here." }]],
+      ['.portfolio-page-grid', ["More samples! These concepts are fictional unless stated otherwise."]]
+    ];
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(en => {
+        if (!en.isIntersecting) return;
+        const key = en.target.dataset.talkKey;
+        if (spoke[key] || quietFor(9000) || performance.now() < 4500) return;
+        const set = SECT.find(a => a[0] === key);
+        if (set && speak(rnd(set[1]))) spoke[key] = 1;
+      }), { rootMargin:'-38% 0px -38% 0px', threshold:0 });
+      SECT.forEach(a => { const el = document.querySelector(a[0]); if (el) { el.dataset.talkKey = a[0]; io.observe(el); } });
+    }
+
+    // react to what happens in the solar systems
+    addEventListener('cosmos', e => {
+      const t = e.detail && e.detail.type;
+      if (t === 'grab' && !grabHinted && !busy) { grabHinted = true; if (performance.now() > 5000) speak("Fun fact: you can fling those planets. Just don't crowd one star…"); }
+      else if (t === 'hole') { emote('is-shrug', 1200); speak("Whoa! That star just collapsed into a black hole. Look at those words go!", { force:true }); }
+      else if (t === 'hole-end') speak("Phew. The star is back. Cosmic reset!", { force:true });
+      else if (t === 'lost' && !(e.detail && e.detail.hole) && !quietFor(15000) && Math.random() < .4) speak(rnd(["Ouch. Stars are hot. That planet's toast.", "Oops! Too close to the sun.", "Poof. Don't worry, it'll re-form."]));
+    });
+
+    // hello, then occasional idle chatter
+    setTimeout(() => {
+      let seen = false; try { seen = sessionStorage.getItem('nk-robot-hello') === '1'; sessionStorage.setItem('nk-robot-hello', '1'); } catch(_e) {}
+      if (!seen) speak(rnd(GREET));
+    }, 2800);
+    setInterval(() => {
+      const now = performance.now();
+      if (now - lastActive > 22000 && !quietFor(40000) && !busy) { lastActive = now - 15000; speak(rnd(IDLE)); }
+    }, 6000);
+    if (fine) document.addEventListener('pointermove', e => {
+      px = e.clientX; py = e.clientY;
+      const c = e.target && e.target.closest ? e.target.closest('.card, .contact-panel') : null;
+      if (c && !gameOpen) { if (c !== hover) { hover = c; hoverSince = performance.now(); } lastOver = performance.now(); }
+    }, {passive:true});
+    function release(){
+      if (!grabbed) return;
+      const s = sway.get(grabbed); if (s) s.target = 0;
+      grabbed.classList.remove('is-grabbed'); grabbed = null; holding = false; m.classList.remove('is-holding');
+    }
+    let last = performance.now();
+    function frame(now){
+      const dt = Math.min(.05, (now - last) / 1000); last = now;
+      if (gameOpen) { if (grabbed) release(); hover = null; }
+      if (hover && hover.matches(':hover')) lastOver = now;
+      if (hover && now - lastOver > 380) hover = null;
+      if (hover && now - hoverSince > 160 && grabbed !== hover) { release(); grabbed = hover; }
+      if (!hover && grabbed) release();
+      let tx, ty;
+      if (grabbed) {
+        const r = grabbed.getBoundingClientRect();
+        tx = clamp(r.left + r.width * .78, 44, innerWidth - 44); ty = clamp(r.top - 29, 46, innerHeight - 80);
+      } else {
+        const s = idleSpot(); tx = s.x + (reduced ? 0 : Math.sin(now * .0007) * 16); ty = s.y + (reduced ? 0 : Math.cos(now * .0009) * 9);
+      }
+      vx += ((tx - x) * 70 - vx * 15) * dt; vy += ((ty - y) * 70 - vy * 15) * dt; x += vx * dt; y += vy * dt;
+      const dist = Math.hypot(tx - x, ty - y), speed = Math.hypot(vx, vy);
+      if (grabbed && !holding && dist < 10 && speed < 120) {
+        holding = true; m.classList.add('is-holding'); grabbed.classList.add('is-grabbed');
+        if (Math.random() < .3 && !quietFor(10000)) speak(rnd(GRAB));
+        const s = sway.get(grabbed) || { g:0, target:1 }; s.target = 1; sway.set(grabbed, s);
+      }
+      m.classList.toggle('is-flying', speed > 140 && !holding);
+      if (busy) place();
+      m.style.transform = 'translate3d(' + (x - 36).toFixed(1) + 'px,' + (y - 36).toFixed(1) + 'px,0)';
+      body.style.rotate = clamp(vx * .02, -16, 16).toFixed(1) + 'deg';
+      // eyes glance toward the cursor
+      let gx = px, gy = py;
+      if (thinking && ttt) { const r = ttt.getBoundingClientRect(); gx = r.left + r.width / 2; gy = r.top + r.height * .55; }
+      const ex = clamp((gx - x) / 90, -1, 1) * 2.6, ey = clamp((gy - y) / 90, -1, 1) * 2;
+      eyes.style.transform = 'translate(' + ex.toFixed(2) + 'px,' + ey.toFixed(2) + 'px)';
+      const t = now / 1000;
+      sway.forEach((s, el) => {                          // the grabbed card hangs from the robot and sways
+        s.g += (s.target - s.g) * Math.min(1, dt * (s.target ? 7 : 5));
+        if (!s.target && s.g < .002) { el.style.translate = ''; el.style.rotate = ''; sway.delete(el); return; }
+        el.style.translate = (Math.sin(t * 1.7) * 3 * s.g).toFixed(2) + 'px ' + ((-11 + Math.sin(t * 2.7) * 3.2) * s.g).toFixed(2) + 'px';
+        el.style.rotate = (Math.sin(t * 2.1) * 1.1 * s.g).toFixed(3) + 'deg';
+      });
+      requestAnimationFrame(frame);
+    }
+
+    /* ---- Tic-tac-toe against the robot ---- */
+    if (ttt && launch) {
+      const cells = [...ttt.querySelectorAll('.ttt-cell')], status = ttt.querySelector('.ttt-status'), scoreEl = ttt.querySelector('.ttt-score');
+      const WIN = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      const board = Array(9).fill('');
+      let over = false, playerTurn = true, level = 1, starter = 'O', started = false, timer = 0;
+      const tally = { you:0, bot:0, draw:0 };
+      const say = t => { status.textContent = t; };
+      const result = b => {
+        for (const [a, c, d] of WIN) if (b[a] && b[a] === b[c] && b[a] === b[d]) return { w:b[a], line:[a,c,d] };
+        return b.every(Boolean) ? { w:'draw' } : null;
+      };
+      function mm(b, turn, d){                         // minimax: O (robot) maximises, X (you) minimises
+        const r = result(b); if (r) return r.w === 'O' ? 10 - d : r.w === 'X' ? d - 10 : 0;
+        let best = turn === 'O' ? -99 : 99;
+        for (let i = 0; i < 9; i++) {
+          if (b[i]) continue; b[i] = turn;
+          const v = mm(b, turn === 'O' ? 'X' : 'O', d + 1); b[i] = '';
+          best = turn === 'O' ? Math.max(best, v) : Math.min(best, v);
+        }
+        return best;
+      }
+      const rnd = a => a[(Math.random() * a.length) | 0];
+      function pick(){
+        const free = board.map((v, i) => v ? -1 : i).filter(i => i >= 0);
+        if (free.length === 9) return rnd([4, 0, 2, 6, 8]);
+        if (Math.random() < [.55, .2, 0][level]) return rnd(free);             // Chill / Normal sometimes slip up
+        let bs = -99, ps = [];
+        for (const i of free) { board[i] = 'O'; const v = mm(board, 'X', 1); board[i] = ''; if (v > bs) { bs = v; ps = [i]; } else if (v === bs) ps.push(i); }
+        return rnd(ps);
+      }
+      function mark(i, who){
+        board[i] = who; const el = cells[i];
+        el.innerHTML = '<i class="mk ' + (who === 'X' ? 'x' : 'o') + '"></i>'; el.disabled = true;
+        el.setAttribute('aria-label', 'Row ' + (((i / 3) | 0) + 1) + ', column ' + (i % 3 + 1) + ', ' + (who === 'X' ? 'you' : 'robot'));
+      }
+      const score = () => { scoreEl.textContent = 'You ' + tally.you + ' · Robot ' + tally.bot + ' · Draws ' + tally.draw; };
+      function finish(r){
+        over = true;
+        if (r.w === 'draw') { tally.draw++; say('A draw. Cosmic balance.'); emote('is-shrug', 1200); speak(rnd(["A draw! We're evenly matched.", "Nobody wins. Cosmic balance."]), { force:true }); }
+        else {
+          r.line.forEach(i => cells[i].classList.add('win'));
+          if (r.w === 'X') { tally.you++; say('You win! Nice moves.'); emote('is-sad', 2600); speak(rnd(["You got me! Well played.", "Nicely done, human. Rematch?"]), { force:true }); }
+          else { tally.bot++; say('Robot wins! Beep boop.'); emote('is-happy', 1800); speak(rnd(["Beep boop. I win! Rematch?", "Calculated. Care for another round?"]), { force:true }); }
+        }
+        score();
+      }
+      function robotTurn(){
+        playerTurn = false; thinking = true; m.classList.add('is-thinking'); say('Robot is thinking…');
+        timer = setTimeout(() => {
+          thinking = false; m.classList.remove('is-thinking');
+          if (!gameOpen || over) return;
+          mark(pick(), 'O'); const r = result(board);
+          if (r) finish(r); else { playerTurn = true; say('Your turn'); }
+        }, 650 + Math.random() * 500);
+      }
+      function newGame(){
+        clearTimeout(timer); thinking = false; m.classList.remove('is-thinking', 'is-happy', 'is-sad', 'is-shrug');
+        board.fill(''); over = false;
+        cells.forEach((c, i) => { c.innerHTML = ''; c.disabled = false; c.classList.remove('win'); c.setAttribute('aria-label', 'Row ' + (((i / 3) | 0) + 1) + ', column ' + (i % 3 + 1) + ', empty'); });
+        starter = starter === 'X' ? 'O' : 'X';                                  // take turns going first
+        if (starter === 'O') robotTurn(); else { playerTurn = true; say('Your turn — you are ✕'); }
+      }
+      cells.forEach((c, i) => c.addEventListener('click', () => {
+        if (!gameOpen || !playerTurn || over || board[i]) return;
+        mark(i, 'X'); const r = result(board);
+        if (r) finish(r); else robotTurn();
+      }));
+      ttt.querySelectorAll('.ttt-levels button').forEach(btn => btn.addEventListener('click', () => {
+        level = +btn.dataset.lv; ttt.querySelectorAll('.ttt-levels button').forEach(x => x.classList.toggle('on', x === btn));
+        speak(["Chill mode. I'll go easy on you.", "Normal mode. A fair fight.", "Genius mode. Good luck. You'll need it."][level], { force:true });
+      }));
+      ttt.querySelector('.ttt-new').addEventListener('click', newGame);
+      function openGame(){
+        gameOpen = true; release(); ttt.hidden = false; launch.hidden = true;
+        requestAnimationFrame(() => ttt.classList.add('open'));
+        if (!started) { started = true; starter = 'O'; newGame(); }
+        emote('is-happy', 900); speak("Tic-tac-toe! You're ✕ and I'm ○. Let's go!", { force:true });
+      }
+      function closeGame(){
+        gameOpen = false; started = false; clearTimeout(timer); thinking = false; m.classList.remove('is-thinking');
+        ttt.classList.remove('open'); setTimeout(() => { if (!gameOpen) ttt.hidden = true; }, 260); launch.hidden = false; speak('Good game! Come back anytime.', { force:true });
+      }
+      launch.addEventListener('click', openGame);
+      ttt.querySelector('.ttt-x').addEventListener('click', closeGame);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && gameOpen) closeGame(); });
+      score();
+    }
+    requestAnimationFrame(frame);
+  })();
+})();
+
 </script>
 </body>
 </html>
