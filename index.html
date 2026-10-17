@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#111014">
-  <meta name="description" content="Nafiz Khan — aspiring email and sales copywriter from Bangladesh.">
-  <title>Nafiz Khan | Copywriter</title>
-
+  <meta name="description" content="Copywriting samples and practice projects by Nafiz Khan.">
+  <title>More Work | Nafiz Khan</title>
   <style>
     :root {
       --bg: #111014;
@@ -676,8 +675,7 @@
       box-shadow: 0 0 0 34px rgba(180,154,255,.018), 0 0 0 82px rgba(180,154,255,.014);
       pointer-events: none;
     }
-    .hero > div:nth-child(2) { position: relative; z-index: 2; grid-column: 1; grid-row: 1; justify-self: start; text-align: left; }
-    .hero > .portrait { grid-column: 2; grid-row: 1; }
+    .hero > div:first-child { position: relative; z-index: 1; }
     .eyebrow {
       display: flex;
       align-items: center;
@@ -704,7 +702,7 @@
     }
     .hero-copy { max-width: 530px; line-height: 1.85; }
     .hero .buttons { align-items: center; margin-bottom: 28px; }
-    .hero > div:nth-child(2) { justify-self: start; text-align: left; }
+    .hero > div:first-child { justify-self: start; text-align: left; }
     .hero .buttons { justify-content: flex-start; }
     .button {
       border-radius: 7px;
@@ -1307,10 +1305,10 @@ body > *:not(#cosmicStarfield):not(.planet-playground):not(#rocketCursor):not(#o
 .distant-sun::before { content:"";position:absolute;inset:17%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9dc 0,#ffd995 22%,#ffb875 48%,rgba(230,132,255,.5) 72%,transparent 100%);box-shadow:0 0 24px 8px rgba(255,190,128,.23),0 0 75px 24px rgba(170,120,255,.15); }
 .distant-sun::after { content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(255,197,128,.12),transparent 66%); }
 @keyframes sun-pulse { 0%,100%{transform:scale(.98);filter:brightness(.95)}50%{transform:scale(1.04);filter:brightness(1.12)} }
-
-
-
-
+.orbit-nav { perspective:850px; transform:translateY(-50%) rotateY(-8deg) rotateX(2deg); transform-style:preserve-3d; transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
+.orbit-nav:hover,.orbit-nav:focus-within { transform:translateY(-50%) rotateY(5deg) rotateX(-3deg);box-shadow:0 18px 45px rgba(0,0,0,.32),0 0 38px rgba(148,103,255,.2); }
+.orbit-core { transform:translateZ(18px); }
+.orbit-link { transform-style:preserve-3d; }
 .orbit-link:hover,.orbit-link:focus-visible,.orbit-link.active { filter:drop-shadow(0 0 9px rgba(180,145,255,.42)); }
 @media(max-width:700px){.distant-sun{right:10px;top:24px;width:95px;opacity:.65}.orbit-nav{right:8px;}}
 @media(prefers-reduced-motion:reduce){.distant-sun{animation:none}.orbit-nav{transition:none}}
@@ -1324,8 +1322,8 @@ body > *:not(#cosmicStarfield):not(.planet-playground):not(#rocketCursor):not(#o
 .distant-sun::after { inset:-35% !important; }
 @media(max-width:700px){.distant-sun{width:88px !important;right:70px !important;top:70px !important;opacity:.62 !important}}
 /* Give the orbit wheel convincing depth without shifting its position. */
-
-
+.orbit-nav { transform:translateY(-50%) rotateY(-12deg) rotateX(4deg) !important; transform-origin:center; }
+.orbit-nav:hover,.orbit-nav:focus-within { transform:translateY(-50%) rotateY(8deg) rotateX(-4deg) scale(1.035) !important; }
 
 
 /* ===== Planet field (v2) =====
@@ -1376,17 +1374,6 @@ main, section, .content-section, .review-section, #about.content-section, .portf
   background:none !important; border-top:0 !important; border-bottom:0 !important; box-shadow:none !important;
 }
 .content-section::before, .review-section::before, .review-section::after { display:none !important; }
-
-/* ===== Orbit menu: stable hover (v2) =====
-   The old menu tilted in 3D and scaled links on hover, which moved the hit area out from
-   under the cursor and made it flicker. Geometry is now static; hover only changes colour/glow. */
-.orbit-nav { perspective:none !important; transform-style:flat !important; transform:translateY(-50%) !important; transition:box-shadow .3s ease !important; }
-.orbit-nav:hover, .orbit-nav:focus-within { transform:translateY(-50%) !important; box-shadow:0 12px 42px rgba(0,0,0,.28), 0 0 38px rgba(148,103,255,.2); }
-.orbit-core { transform:none !important; }
-.orbit-link { transform-style:flat !important; transition:background .2s ease, color .2s ease, box-shadow .2s ease !important; }
-.orbit-link:hover, .orbit-link:focus-visible, .orbit-link.active { box-shadow:0 0 0 4px rgba(183,160,255,.16), 0 0 18px rgba(167,139,250,.5); }
-.orbit-link::after { content:""; position:absolute; inset:-5px; border-radius:50%; } /* slightly larger, steady hit area */
-@media (max-width:700px) { .orbit-nav, .orbit-nav:hover, .orbit-nav:focus-within { transform:none !important; } }
 
 
 /* ===== Solar system layer (v3) ===== */
@@ -1617,43 +1604,28 @@ main, section, .content-section, .review-section, #about.content-section, .portf
 </style>
 
 </head>
-
 <body>
 <canvas id="cosmicStarfield" aria-hidden="true"></canvas>
 <canvas id="orbitRings" aria-hidden="true"></canvas>
 <canvas id="debrisFx" aria-hidden="true"></canvas>
 <div class="planet-playground" aria-label="Decorative solar systems; drag a planet and it will orbit the nearest star" role="group">
-  <div class="star star-blue" data-star-id="services" data-section="#services" data-x="91" data-y="38" style="--size:76px" aria-hidden="true"></div>
-  <div class="star star-ember" data-star-id="work" data-section="#work" data-x="9" data-y="50" style="--size:84px" aria-hidden="true"></div>
-  <div class="star star-violet" data-star-id="about" data-section="#about" data-x="92" data-y="45" style="--size:66px" aria-hidden="true"></div>
-  <div class="star star-teal" data-star-id="rev1" data-section="#reviews" data-x="92" data-y="20" style="--size:72px" aria-hidden="true"></div>
-  <div class="star star-ember" data-star-id="rev2" data-section="#reviews" data-x="8" data-y="78" style="--size:60px" aria-hidden="true"></div>
-  <div class="star" data-star-id="contact" data-section="#contact" data-x="90" data-y="50" style="--size:64px" aria-hidden="true"></div>
-  <div class="planet planet-gold" data-star="home" data-r="105" data-a="40" tabindex="0" role="img" aria-label="Golden planet. Drag to explore."></div>
-  <div class="planet planet-ember" data-star="home" data-r="165" data-a="200" style="--size:38px" tabindex="0" role="img" aria-label="Ember planet. Drag to explore."></div>
-  <div class="planet planet-lilac" data-star="home" data-r="275" data-a="320" tabindex="0" role="img" aria-label="Lilac ringed planet. Drag to explore."><span class="planet-ring"></span></div>
-  <div class="planet planet-spark" data-star="home" data-r="320" data-a="100" style="--size:24px" tabindex="0" role="img" aria-label="Tiny star. Drag to explore."></div>
-  <div class="planet planet-moon" data-star="home" data-r="360" data-a="150" tabindex="0" role="img" aria-label="Small cratered moon. Drag to explore."></div>
-  <div class="planet planet-spark" data-star="home" data-r="400" data-a="250" style="--size:26px" tabindex="0" role="img" aria-label="Tiny star. Drag to explore."></div>
-  <div class="planet planet-rose" data-star="home" data-r="440" data-a="20" tabindex="0" role="img" aria-label="Rose planet. Drag to explore."></div>
-  <div class="planet planet-spark" data-star="home" data-r="480" data-a="300" style="--size:28px" tabindex="0" role="img" aria-label="Tiny star. Drag to explore."></div>
-  <div class="planet planet-teal" data-star="home" data-r="520" data-a="200" tabindex="0" role="img" aria-label="Teal planet. Drag to explore."></div>
-  <div class="planet planet-rose" data-star="services" data-r="100" data-a="30" tabindex="0" role="img" aria-label="Rose planet. Drag to explore."></div>
-  <div class="planet planet-mint" data-star="services" data-r="160" data-a="210" tabindex="0" role="img" aria-label="Mint planet. Drag to explore."></div>
-  <div class="planet planet-azure" data-star="services" data-r="225" data-a="100" tabindex="0" role="img" aria-label="Blue planet. Drag to explore."></div>
-  <div class="planet planet-dusk" data-star="work" data-r="105" data-a="70" tabindex="0" role="img" aria-label="Dusk moon. Drag to explore."></div>
-  <div class="planet planet-teal" data-star="work" data-r="170" data-a="250" tabindex="0" role="img" aria-label="Teal planet. Drag to explore."></div>
-  <div class="planet planet-orchid" data-star="work" data-r="245" data-a="150" tabindex="0" role="img" aria-label="Orchid planet. Drag to explore."></div>
-  <div class="planet planet-frost" data-star="work" data-r="325" data-a="330" tabindex="0" role="img" aria-label="Frost ringed planet. Drag to explore."><span class="planet-ring"></span></div>
-  <div class="planet planet-sunset" data-star="about" data-r="95" data-a="10" style="--size:40px" tabindex="0" role="img" aria-label="Sunset planet. Drag to explore."></div>
-  <div class="planet planet-gas" data-star="about" data-r="190" data-a="200" tabindex="0" role="img" aria-label="Striped gas giant. Drag to explore."></div>
-  <div class="planet planet-mint" data-star="rev1" data-r="110" data-a="60" style="--size:44px" tabindex="0" role="img" aria-label="Mint planet. Drag to explore."></div>
-  <div class="planet planet-moon" data-star="rev1" data-r="185" data-a="240" style="--size:38px" tabindex="0" role="img" aria-label="Pale moon. Drag to explore."></div>
-  <div class="planet planet-azure" data-star="rev2" data-r="95" data-a="150" style="--size:26px" tabindex="0" role="img" aria-label="Small blue planet. Drag to explore."></div>
-  <div class="planet planet-sunset" data-star="rev2" data-r="150" data-a="320" style="--size:34px" tabindex="0" role="img" aria-label="Sunset planet. Drag to explore."></div>
-  <div class="planet planet-ember" data-star="contact" data-r="115" data-a="20" style="--size:52px" tabindex="0" role="img" aria-label="Ember planet. Drag to explore."></div>
-  <div class="planet planet-frost" data-star="contact" data-r="185" data-a="160" style="--size:44px" tabindex="0" role="img" aria-label="Frost ringed planet. Drag to explore."><span class="planet-ring"></span></div>
-  <div class="planet planet-azure" data-star="contact" data-r="250" data-a="260" style="--size:24px" tabindex="0" role="img" aria-label="Tiny blue planet. Drag to explore."></div>
+  <div class="star star-blue" data-star-id="wh" data-section=".portfolio-page-header" data-x="90" data-y="50" style="--size:70px" aria-hidden="true"></div>
+  <div class="star star-ember" data-star-id="wg1" data-section=".portfolio-page-grid" data-x="8" data-y="10" style="--size:80px" aria-hidden="true"></div>
+  <div class="star" data-star-id="wg2" data-section=".portfolio-page-grid" data-x="92" data-y="45" style="--size:84px" aria-hidden="true"></div>
+  <div class="star star-violet" data-star-id="wg3" data-section=".portfolio-page-grid" data-x="8" data-y="82" style="--size:66px" aria-hidden="true"></div>
+  <div class="planet planet-gold" data-star="wh" data-r="100" data-a="20" tabindex="0" role="img" aria-label="Golden planet. Drag to explore."></div>
+  <div class="planet planet-lilac" data-star="wh" data-r="175" data-a="200" tabindex="0" role="img" aria-label="Lilac ringed planet. Drag to explore."><span class="planet-ring"></span></div>
+  <div class="planet planet-orchid" data-star="wg1" data-r="115" data-a="60" tabindex="0" role="img" aria-label="Orchid planet. Drag to explore."></div>
+  <div class="planet planet-teal" data-star="wg1" data-r="180" data-a="240" tabindex="0" role="img" aria-label="Teal planet. Drag to explore."></div>
+  <div class="planet planet-dusk" data-star="wg2" data-r="100" data-a="10" tabindex="0" role="img" aria-label="Dusk moon. Drag to explore."></div>
+  <div class="planet planet-ember" data-star="wg2" data-r="170" data-a="150" style="--size:44px" tabindex="0" role="img" aria-label="Ember planet. Drag to explore."></div>
+  <div class="planet planet-gas" data-star="wg2" data-r="255" data-a="300" tabindex="0" role="img" aria-label="Striped gas giant. Drag to explore."></div>
+  <div class="planet planet-rose" data-star="wg3" data-r="90" data-a="100" tabindex="0" role="img" aria-label="Rose planet. Drag to explore."></div>
+  <div class="planet planet-frost" data-star="wg3" data-r="150" data-a="260" tabindex="0" role="img" aria-label="Frost ringed planet. Drag to explore."><span class="planet-ring"></span></div>
+  <div class="planet planet-moon" data-star="wg3" data-r="215" data-a="40" tabindex="0" role="img" aria-label="Small cratered moon. Drag to explore."></div>
+  <div class="planet planet-spark" data-star="wh" data-r="310" data-a="100" style="--size:24px" tabindex="0" role="img" aria-label="Tiny star. Drag to explore."></div>
+  <div class="planet planet-spark" data-star="wg2" data-r="380" data-a="250" style="--size:26px" tabindex="0" role="img" aria-label="Tiny star. Drag to explore."></div>
+  <div class="planet planet-spark" data-star="wg3" data-r="450" data-a="300" style="--size:28px" tabindex="0" role="img" aria-label="Tiny star. Drag to explore."></div>
 </div>
 
 
@@ -1685,116 +1657,17 @@ main, section, .content-section, .review-section, #about.content-section, .portf
 })();
 </script>
 
-  <header>
-    <div class="container nav">
-      <a class="logo" href="#home">Be the change that you wish to see in the world<span>!</span></a>
-
-      <nav aria-label="Main navigation">
-        <a href="#services">Services</a>
-        <a href="#work">Sample work</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
-
-
-  <aside class="orbit-nav" id="orbitNav" aria-label="Orbit page navigation">
-<canvas class="orbit-canvas" aria-hidden="true"></canvas>
-    <div class="orbit-core" aria-hidden="true">NK</div>
-    <a class="orbit-link active" href="#home" aria-label="Home" title="Home"><span>Home</span>01</a>
-    <a class="orbit-link" href="#services" aria-label="Services" title="Services"><span>Services</span>02</a>
-    <a class="orbit-link" href="#work" aria-label="Sample Work" title="Sample Work"><span>Sample Work</span>03</a>
-    <a class="orbit-link" href="#about" aria-label="About" title="About"><span>About</span>04</a>
-    <a class="orbit-link" href="#reviews" aria-label="Reviews" title="Reviews"><span>Reviews</span>05</a>
-    <a class="orbit-link" href="#contact" aria-label="Contact" title="Contact"><span>Contact</span>06</a>
-    <p class="orbit-hint">Explore the orbit</p>
-  </aside>
-
   <main>
-    <section class="container hero" id="home">
-      <div class="distant-sun" data-star-id="home" aria-hidden="true"><span></span></div>
-      <div>
-        <p class="eyebrow">Email · Sales · Landing Page Copy</p>
-
-        <h1>Words that connect.<br>
-          <span class="purple">Copy that cares.</span>
-        </h1>
-
-        <p class="hero-copy">
-          I write clear, thoughtful copy to help businesses communicate
-          their value, connect with their audience, and make the next
-          step easier.
-        </p>
-
-        <div class="buttons">
-          <a class="button primary" href="#work">Explore my work</a>
-          <a class="button" href="#contact">Let's talk</a>
-        </div>
-      </div>
-
-      <div class="portrait">
-        <!-- Your original photo will go here in the next step. -->
-        <img
-          src="images/nafiz-main.png"
-          alt="Portrait of Nafiz Khan"
-          width="620"
-          height="775"
-        >
-        <p class="photo-note">The person behind the words.</p>
-      </div>
-    </section>
-
-    <section class="content-section" id="services">
+    <header class="portfolio-page-header">
       <div class="container">
-        <p class="eyebrow">What I do</p>
-        <h2 class="section-title">Good copy starts with understanding.</h2>
-        <p class="section-intro">
-          My focus is on writing that sounds human, respects the reader,
-          and gives people a clear reason to care.
-        </p>
-
-        <div class="grid services-grid">
-          <a class="card service-card service-link" href="#sample-email" aria-label="View the Morning Ritual email sample project">
-            <p class="number">01 / EMAIL</p>
-            <h3>Email Copywriting</h3>
-            <p>Welcome sequences, promotional emails, re-engagement campaigns, and follow-ups that give readers a clear reason to open, read, and act.</p>
-            <span class="label">Welcome · Promotional · Re-engagement</span>
-          </a>
-
-          <a class="card service-card service-link" href="#sample-sales" aria-label="View the Daily Planner sales copy sample project">
-            <p class="number">02 / SALES</p>
-            <h3>Sales Copywriting</h3>
-            <p>Sales pages and product descriptions that explain value, answer common questions, and help potential customers make informed decisions.</p>
-            <span class="label">Sales pages · Product descriptions</span>
-          </a>
-
-          <a class="card service-card service-link" href="work.html#sample-landing" aria-label="View the Local Gym landing page sample project">
-            <p class="number">03 / LANDING PAGES</p>
-            <h3>Landing Page Copy</h3>
-            <p>Focused page copy that connects a visitor's needs to a clear offer, supports the key message, and guides them toward one next step.</p>
-            <span class="label">Lead generation · Offer pages</span>
-          </a>
-
-          <article class="card service-card">
-            <p class="number">04 / WEBSITE</p>
-            <h3>Website Copy</h3>
-            <p>Clear, reader-focused copy for key website sections, including headlines, service descriptions, and calls to action.</p>
-            <span class="label">Headlines · Service sections · CTAs</span>
-          </article>
-        </div>
+        <a class="back-link" href="index.html">← Back to main portfolio</a>
+        <p class="eyebrow">Writing archive</p>
+        <h1>More of my work.</h1>
+        <p>A growing collection of copywriting samples, experiments, and practice projects. These concepts are fictional unless explicitly stated otherwise.</p>
       </div>
-    </section>
-
-    <section class="content-section" id="work">
+    </header>
+    <section class="portfolio-page-grid">
       <div class="container">
-        <p class="eyebrow">Practice projects</p>
-        <h2 class="section-title">Ideas put into words.</h2>
-        <p class="section-intro">
-          These are fictional concept projects that demonstrate my
-          writing approach. They are not paid client work.
-        </p>
-
         <div class="grid">
           <article class="card">
             <p class="number">PROJECT 01 / EMAIL</p>
@@ -1874,176 +1747,85 @@ main, section, .content-section, .review-section, #about.content-section, .portf
             <span class="label">Fictional concept</span>
           </article>
 
-        </div>
-        <div class="work-more-wrap">
-          <a class="btn work-more-btn" href="work.html">See more of my work <span aria-hidden="true">↗</span></a>
-          <p class="work-more-note">More samples, experiments, and future projects in one place.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="content-section" id="about">
-      <div class="container">
-        <p class="eyebrow">About me</p>
-        <h2 class="section-title">Still learning. Serious about improving.</h2>
-
-        <div class="about-layout">
-          <div class="initial" aria-hidden="true">I Wish To Be Better Than Yesterday</div>
-
-          <div class="about-copy">
+          <article class="card">
+            <p class="number">PROJECT 03 / LANDING PAGE COPY</p>
+            <h3 id="sample-landing">Local Gym</h3>
             <p>
-              I'm Nafiz Khan, an aspiring independent copywriter from
-              Bangladesh. I'm building my skills in Copywriting,
-              with a focus on clear communication, careful research,
-              and writing that respects the reader.
+              A landing-page concept for a fictional local gym,
+              focused on making strength training feel more approachable.
             </p>
 
-            <p>
-              I'm at the beginning of this journey. The work displayed
-              here consists of practice projects, and I'm looking for
-              opportunities to learn, improve, and help businesses
-              communicate more effectively.
+            <p class="sample-subject">
+              <strong>We lay the path, you take the steps.</strong>
+              <br>
+              Easy steps that build your strength.
             </p>
 
+            <p class="sample-body">
+              Building strength is more of a psychological thing than you may think.
+              <br>
+              Open spaces, large crowds, and randomized routines can put pressure on you.
+              <br>
+              Increasing difficulty does not automatically increase results.
+              <br>
+              Resetting your progress and changing your routine is no solution.
+              <br>
+              Results come from efficient training, not just hard work.
+              <br><br>
+              We developed our gym with your health in mind.
+              <br>
+              Smaller groups, guided by our personal trainers.
+              <br>
+              Track your progress alongside others on a similar path.
+              <br>
+              Follow an easy-to-understand routine that helps you build strength.
+              <br><br>
+              Book a free session with us and see if we're a fit.
+            </p>
+            <span class="label">Fictional concept</span>
+          </article>
+
+          <article class="card">
+            <p class="number">PROJECT 04 / EMAIL · RE-ENGAGEMENT</p>
+            <h3>Bookstore Welcome-Back Email</h3>
             <p>
-              I believe good writing isn't about sounding complicated.
-              It's about understanding a person, finding what matters,
-              and saying it clearly.
+              A short re-engagement email for a fictional bookstore.
+              The brief provided limited information about the store and its former customer,
+              so the concept avoids unsupported claims about products or offers.
             </p>
 
-            <div class="principle">Be better, not perfect.</div>
-          </div>
+            <p class="sample-subject">
+              <strong>Subject:</strong> Your preferences matter to us.
+            </p>
+
+            <p class="sample-body">
+              Books bring out the different you.
+              <br>
+              Reading can provide different perspectives and help you discover something new about yourself.
+              <br>
+              Just 10 minutes with a book can be a small way to make room for reading in your day.
+              <br>
+              Whenever you're ready to explore again, we'd love to welcome you back.
+              <br><br>
+              Browse our latest collection.
+            </p>
+            <span class="label">Fictional concept · Limited brief</span>
+          </article>
+
+          <article class="card">
+            <p class="number">PROJECT 05 / EMAIL · ABANDONED CART</p>
+            <h3>LumaSkin — Abandoned-Cart Email Sequence</h3>
+            <p>A three-email concept for a fictional skincare brand, introducing its Daily Balance Moisturizer and encouraging shoppers to return to their carts. This is a practice project, not paid client work.</p>
+            <div class="sample-email-part"><p class="sample-subject"><strong>Email 1 · Subject:</strong> Your skin should not miss the care it deserves.</p><p class="sample-subject"><strong>Preview:</strong> Your skin deserves attention</p><p class="sample-body">Skin is the one part of our body that is exposed to everything.<br>Busy schedules and complicated routines make it hard to care for our skin.<br>So we at LumaSkin present to you our latest product!<br>Our Daily Balance Moisturizer, designed to keep your delicate skin hydrated and smooth.<br>For more information, visit our product page.</p></div>
+            <div class="sample-email-part"><p class="sample-subject"><strong>Email 2 · Subject:</strong> Make hydration a part of your daily life.</p><p class="sample-subject"><strong>Preview:</strong> Skincare is not supposed to be hard.</p><p class="sample-body">Leaving your skin unattended for a long time can result in rough texture, dehydrated skin, and irritation.<br>This can make your skin more vulnerable to damage.<br>With our product, you can avoid all that!<br>Our Daily Balance Moisturizer is lightweight, non-greasy, and designed to be easy to use and fast-acting.<br>Just apply it once in the morning or evening, and it will keep your skin hydrated and smooth.<br>To order, click the link below.</p></div>
+            <div class="sample-email-part"><p class="sample-subject"><strong>Email 3 · Subject:</strong> Give your skin a gift.</p><p class="sample-subject"><strong>Preview:</strong> No more dehydrated skin!</p><p class="sample-body">We at LumaSkin care about you, and our Daily Balance Moisturizer is designed to do just that.<br>In a 50 mL container, you can have the gift your skin deserves.<br>It's lightweight and non-greasy, giving your skin a smooth, clear finish.<br>Orders over $10 qualify for free delivery.<br>Let us be a part of your daily skincare routine.</p></div>
+            <span class="label">Fictional concept · Practice project</span>
+          </article>
         </div>
-      </div>
-    </section>
-    
-<section class="review-section" id="reviews">
-  <div class="container">
-    <p class="eyebrow">Feedback</p>
-
-    <h2 class="section-title">Worked with me?</h2>
-
-    <p class="section-intro">
-      I'd appreciate your honest feedback. It helps me understand
-      what I'm doing well and where I can improve.
-    </p>
-
-    <div class="review-panel">
-      <iframe
-        class="review-frame"
-        src="https://docs.google.com/forms/d/e/1FAIpQLSdGmBm0bhCCjnUQl1epHR3BdfOpEMEvg8LJhcXTGJ3K2I1fmA/viewform?embedded=true" 
-        title="Leave feedback for Nafiz Khan"
-        loading="lazy">
-      </iframe>
-    </div>
-  </div>
-</section>
-    
-    <section class="content-section" id="contact">
-      <div class="container">
-        <div class="contact-panel">
-          <p class="eyebrow">Get in touch</p>
-          <h2 class="section-title">Have something in mind?</h2>
-
-          <p>
-            If you need help with an email or sales-copy project,
-            I'd be glad to hear about it. Tell me what you're working
-            on, and we can start a conversation.
-          </p>
-
-          <a class="button primary"
-             href="mailto:n.tonmoy.khan@gmail.com?subject=Copywriting%20Inquiry">
-            Email me
-          </a>
-
-          <p>
-            <a class="email" href="mailto:n.tonmoy.khan@gmail.com">
-              n.tonmoy.khan@gmail.com
-            </a>
-          </p>
-        </div>
+        <div class="future-work-note"><strong>This page can grow with you.</strong><br>When you create another sample, add a new <code>&lt;article class="card"&gt;</code> inside the grid above. Keep each project clearly labelled as a concept or client project, as appropriate.</div>
       </div>
     </section>
   </main>
-
-  <footer>
-    <div class="container footer-inner">
-      <span>&copy; <span id="year"></span> Nafiz Khan</span>
-      <span>Built with care, one step at a time.</span>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById("year").textContent =
-      new Date().getFullYear();
-  </script>
-
-  <script>
-    (() => {
-      const orbit = document.getElementById('orbitNav');
-      const links = [...orbit.querySelectorAll('.orbit-link')];
-      const targets = links.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
-      const core = orbit.querySelector('.orbit-core');
-
-      // On small screens, the orbit becomes a compact, expandable navigation button.
-      core.setAttribute('role', 'button');
-      core.setAttribute('tabindex', '0');
-      core.setAttribute('aria-label', 'Toggle page navigation');
-      const toggleOrbit = () => {
-        if (window.matchMedia('(max-width: 720px)').matches) {
-          orbit.classList.toggle('open');
-          core.setAttribute('aria-expanded', orbit.classList.contains('open') ? 'true' : 'false');
-        }
-      };
-      core.addEventListener('click', toggleOrbit);
-      core.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          toggleOrbit();
-        }
-      });
-      links.forEach(link => link.addEventListener('click', () => orbit.classList.remove('open')));
-
-      // Pick the section whose top is nearest the active reading line.
-      // This avoids IntersectionObserver choosing a neighboring section when two overlap.
-      const setActiveSection = () => {
-        const readingLine = window.innerHeight * 0.38;
-        let current = targets[0];
-        let bestDistance = Infinity;
-        for (const target of targets) {
-          const rect = target.getBoundingClientRect();
-          const distance = rect.top <= readingLine && rect.bottom > readingLine
-            ? Math.abs(rect.top - readingLine) * 0.35
-            : Math.abs(rect.top - readingLine) + (rect.top > readingLine ? 30 : 80);
-          if (distance < bestDistance) { bestDistance = distance; current = target; }
-        }
-        // At the very bottom, Contact should always be active.
-        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8) {
-          current = document.querySelector('#contact') || current;
-        }
-        links.forEach(link => {
-          const active = link.getAttribute('href') === '#' + current.id;
-          link.classList.toggle('active', active);
-          if (active) link.setAttribute('aria-current', 'location');
-          else link.removeAttribute('aria-current');
-        });
-      };
-      let scrollTicking = false;
-      const scheduleActiveUpdate = () => {
-        if (scrollTicking) return;
-        scrollTicking = true;
-        window.requestAnimationFrame(() => { setActiveSection(); scrollTicking = false; });
-      };
-      window.addEventListener('scroll', scheduleActiveUpdate, { passive: true });
-      window.addEventListener('resize', scheduleActiveUpdate);
-      window.addEventListener('load', setActiveSection);
-      links.forEach(link => link.addEventListener('click', () => {
-        links.forEach(item => item.classList.toggle('active', item === link));
-      }));
-      setActiveSection();
-    })();
-  </script>
-
 
 <script>
 (() => {
@@ -2558,7 +2340,6 @@ main, section, .content-section, .review-section, #about.content-section, .portf
     layout();
     requestAnimationFrame(t => { last = t; requestAnimationFrame(tick); });
   }
-
 })();
 </script>
 <div id="mascot" aria-hidden="true"><div class="mascot-body"><svg viewBox="0 0 72 90" width="72" height="90" xmlns="http://www.w3.org/2000/svg">
