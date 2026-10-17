@@ -1589,6 +1589,18 @@ main, section, .content-section, .review-section, #about.content-section, .portf
 @media (max-width:700px) { #ttt-launch { left:80px; bottom:30px; } #ttt { left:50%; bottom:14px; margin-left:-113px; } }
 @media (prefers-reduced-motion:reduce) { #ttt-launch, .mk, .ttt-cell.win, #mascot.is-happy .mascot-body, #mascot.is-shrug .mascot-body { animation:none; } }
 
+
+    .eyebrow.bh-sigil-pulled::before {
+      animation: bhSigilSuction 1.1s cubic-bezier(.55,0,.9,.25) forwards;
+      transform-origin:center; z-index:2;
+    }
+    @keyframes bhSigilSuction {
+      0% { transform:translate(0,0) rotate(0) scale(1); opacity:1; }
+      45% { transform:translate(24px,-12px) rotate(180deg) scale(.72); opacity:.85; }
+      100% { transform:translate(58px,-28px) rotate(720deg) scale(.02); opacity:0; }
+    }
+    .eyebrow:not(.bh-sigil-pulled)::before { animation:bhSigilReturn .55s ease-out both; }
+    @keyframes bhSigilReturn { from { opacity:0; transform:translate(18px,-8px) scale(.1) rotate(180deg); } to { opacity:1; transform:none; } }
 </style>
 
 </head>
@@ -1979,6 +1991,12 @@ main, section, .content-section, .review-section, #about.content-section, .portf
     }
     function stepPlanets(dt){
       for (const p of planets) {
+        if (p.mode === 'dead') {
+          // The canvas owns the debris now; keep the original DOM planet hidden.
+          p.el.style.visibility = 'hidden';
+          if (p.sunk && p.sunkBy) { p.cx = p.sunkBy.x; p.cy = p.sunkBy.y; }
+          continue;
+        }
         if (p.mode === 'drag') continue;
         if (p.mode === 'absorb') {
           const s = p.absStar;
@@ -2039,6 +2057,8 @@ main, section, .content-section, .review-section, #about.content-section, .portf
       }
       for (const p of planets) {
         if (p.mode !== 'dead' || p.hold) continue;
+        // Keep every destroyed body dormant until the complete black-hole sequence has ended.
+        if (hole) continue;
         if (p.pending <= 0 || (now - p.deadAt) > 8500) {
           const bh = holeFor(p, null);
           if (bh) { sinkInto(p, bh, now); continue; }          // a hole now sits at its home: keep it away until the hole ends
@@ -2087,7 +2107,7 @@ main, section, .content-section, .review-section, #about.content-section, .portf
       const bh = holeFor(p, by);                       // a live black hole owns this death (hit it, or it is this body's home star)
       p.mode = 'dead'; p.deadAt = now; p.killedBy = by || null; p.sunk = false; p.sunkBy = null;
       if (by && !bh) kills.push({ t: now, s: by, p });
-      p.el.classList.add('is-destroyed'); p.el.classList.remove('over-text', 'is-dragging'); p.over = false;
+      p.el.classList.add('is-destroyed'); p.el.style.visibility = 'hidden'; p.el.style.scale = ''; p.el.classList.remove('over-text', 'is-dragging'); p.over = false;
       burst(p, hot);
       p.star = p.homeStar; p.r = p.rTarget = p.homeR * K; p.adopted = false;
       if (bh) sinkInto(p, bh, now);                    // debris spirals into the hole; no re-forming while it exists
@@ -2108,7 +2128,7 @@ main, section, .content-section, .review-section, #about.content-section, .portf
       p.mode = 'orbit'; p.invuln = now + 1800; p.killedBy = null; p.sunk = false; p.sunkBy = null;
       p.star = p.homeStar; p.r = p.rTarget = p.homeR * K;                     // re-form on its own home orbit (a freed body was parked in the hole)
       p.cx = p.star.x + Math.cos(p.angle) * p.r; p.cy = p.star.y + Math.sin(p.angle) * p.r;
-      p.el.classList.remove('is-destroyed'); p.el.classList.add('is-reforming');
+      p.el.classList.remove('is-destroyed'); p.el.style.visibility = 'visible'; p.el.style.scale = ''; p.el.style.transition = ''; p.el.classList.add('is-reforming');
       setTimeout(() => p.el.classList.remove('is-reforming'), 900);
       flashes.push({ x:p.cx, y:p.cy, r:p.size * .35, born:now, hot:false });
     }
@@ -2191,17 +2211,24 @@ main, section, .content-section, .review-section, #about.content-section, .portf
         return { el, cx, cy, d, a0: Math.atan2(dy, dx), start: d / 70 + Math.random() * 1.4, live:false };
       });
       // 'feeding' first (bodies are swallowed), then the star collapses into a black hole
-      hole = { s, tStart: now, t0: 0, state:'feeding', endAt:0, idleAt:0, absorbed: near.concat(sunk), words };
-      emit('hole');
+      const starPull = stars.filter(other => other !== s && Math.hypot(other.x-s.x, other.y-s.y) < nearR(s) * 2.8).map(other => ({ star:other, x:other.x, y:other.y, opacity:other.el.style.opacity }));
+      const heroSigil = document.querySelector('#home .eyebrow');
+      if (heroSigil) heroSigil.classList.add('bh-sigil-pulled');
+      hole = { s, tStart: now, t0: 0, state:'feeding', endAt:0, idleAt:0, absorbed: near.concat(sunk), words, starPull, heroSigil };
+      emit('hole', { x:s.x, y:s.y, id:s.id });
     }
     function finishAbsorb(p){
       flashes.push({ x:p.absStar.x, y:p.absStar.y, r:p.absStar.r * .55, born:performance.now(), hot:true });
       p.mode = 'dead'; p.hold = true; p.pending = 0; p.deadAt = performance.now();
-      p.el.classList.add('is-destroyed'); p.el.style.scale = ''; p.el.style.transition = '';
+      p.el.classList.add('is-destroyed'); p.el.style.visibility = 'hidden'; p.el.style.scale = ''; p.el.style.transition = '';
       p.star = p.homeStar; p.r = p.rTarget = p.homeR * K; p.adopted = false;
     }
     function endHole(now){
       const h = hole, s = h.s; h.state = 'ending'; h.endAt = now;
+      for (const item of h.starPull || []) {
+        const other = item.star; other.x = item.x; other.y = item.y; other.el.style.opacity = item.opacity;
+        if (!other.home) { other.el.style.transition = 'left 1.2s ease, top 1.2s ease, opacity 1.2s ease'; other.el.style.left = (item.x - other.el.offsetWidth/2) + 'px'; other.el.style.top = (item.y - other.el.offsetHeight/2) + 'px'; setTimeout(() => { other.el.style.transition = ''; }, 1300); }
+      }
       emit('hole-end');
       s.el.classList.remove('is-hole'); s.el.style.scale = ''; s.el.classList.add('is-reviving');
       setTimeout(() => s.el.classList.remove('is-reviving'), 1400);
@@ -2225,12 +2252,22 @@ main, section, .content-section, .review-section, #about.content-section, .portf
         return;
       }
       const t = (now - h.t0) / 1000;
+      if (h.state === 'active') {
+        const pull = Math.min(.94, Math.max(0, t / 1.8));
+        for (const item of h.starPull || []) {
+          const other = item.star;
+          other.x = item.x + (h.s.x - item.x) * pull; other.y = item.y + (h.s.y - item.y) * pull;
+          if (!other.home) { other.el.style.left = (other.x - other.el.offsetWidth/2) + 'px'; other.el.style.top = (other.y - other.el.offsetHeight/2) + 'px'; }
+          other.el.style.opacity = String(1 - pull * .72);
+        }
+      }
       if (h.state === 'active' && t > 38) endHole(now);
       let endK = 0;
       if (h.state === 'ending') {
         endK = clamp((now - h.endAt) / 3000, 0, 1);
         if (now - h.endAt > 3400) {
           h.words.forEach(w => { w.el.style.transform = ''; w.el.style.opacity = ''; w.el.classList.remove('bh-live'); });
+          if (h.heroSigil) h.heroSigil.classList.remove('bh-sigil-pulled');
           hole = null; return;
         }
       }
@@ -2397,6 +2434,7 @@ main, section, .content-section, .review-section, #about.content-section, .portf
     const body = m.querySelector('.mascot-body'), eyes = m.querySelector('.robot-eyes');
     const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
     let x = -80, y = innerHeight - 112, vx = 0, vy = 0, hover = null, hoverSince = 0, lastOver = 0, grabbed = null, holding = false, px = innerWidth / 2, py = innerHeight / 2;
+    let survivalUntil = 0, survivalPullUntil = 0, survivalX = 0, survivalY = 0, survivalCard = null;
     const sway = new Map();
     const ttt = document.getElementById('ttt'), launch = document.getElementById('ttt-launch');
     let gameOpen = false, thinking = false;
@@ -2521,7 +2559,13 @@ main, section, .content-section, .review-section, #about.content-section, .portf
     addEventListener('cosmos', e => {
       const t = e.detail && e.detail.type;
       if (t === 'grab' && !grabHinted && !busy) { grabHinted = true; if (performance.now() > 5000) speak("Fun fact: you can fling those planets. Just don't crowd one star…"); }
-      else if (t === 'hole') { emote('is-shrug', 1200); speak("Whoa! That star just collapsed into a black hole. Look at those words go!", { force:true }); }
+      else if (t === 'hole') {
+        const d = e.detail || {}; survivalX = clamp((d.x || innerWidth/2) - scrollX, 40, innerWidth-40); survivalY = clamp((d.y || scrollY+innerHeight/2) - scrollY, 50, innerHeight-90);
+        const candidates = [...document.querySelectorAll('.service-card, #work .card, .portfolio-page-grid .card, .contact-panel, .card')].filter(el => el.getClientRects().length && !el.closest('#mascot, #mascot-bubble'));
+        survivalCard = candidates.sort((a,b) => { const ra=a.getBoundingClientRect(), rb=b.getBoundingClientRect(); return Math.hypot(ra.left+ra.width/2-survivalX,ra.top+ra.height/2-survivalY)-Math.hypot(rb.left+rb.width/2-survivalX,rb.top+rb.height/2-survivalY); })[0] || null;
+        survivalPullUntil = performance.now() + 1400; survivalUntil = performance.now() + 9000; hover = null; release();
+        emote('is-shrug', 1200); speak("Black hole! I need a template to hold onto!", { force:true });
+      }
       else if (t === 'hole-end') speak("Phew. The star is back. Cosmic reset!", { force:true });
       else if (t === 'lost' && !(e.detail && e.detail.hole) && !quietFor(15000) && Math.random() < .4) speak(rnd(["Ouch. Stars are hot. That planet's toast.", "Oops! Too close to the sun.", "Poof. Don't worry, it'll re-form."]));
     });
@@ -2548,13 +2592,21 @@ main, section, .content-section, .review-section, #about.content-section, .portf
     let last = performance.now();
     function frame(now){
       const dt = Math.min(.05, (now - last) / 1000); last = now;
+      const surviving = now < survivalUntil;
       if (gameOpen) { if (grabbed) release(); hover = null; }
-      if (hover && hover.matches(':hover')) lastOver = now;
-      if (hover && now - lastOver > 380) hover = null;
-      if (hover && now - hoverSince > 160 && grabbed !== hover) { release(); grabbed = hover; }
-      if (!hover && grabbed) release();
+      if (!surviving) {
+        if (hover && hover.matches(':hover')) lastOver = now;
+        if (hover && now - lastOver > 380) hover = null;
+        if (hover && now - hoverSince > 160 && grabbed !== hover) { release(); grabbed = hover; }
+        if (!hover && grabbed) release();
+      } else if (now >= survivalPullUntil && survivalCard && grabbed !== survivalCard) { release(); grabbed = survivalCard; }
       let tx, ty;
-      if (grabbed) {
+      if (surviving && now < survivalPullUntil) { tx = survivalX; ty = survivalY; }
+      else if (surviving && survivalCard) {
+        const r = survivalCard.getBoundingClientRect();
+        tx = clamp(r.left + r.width * .78, 44, innerWidth - 44); ty = clamp(r.top - 29, 46, innerHeight - 80);
+      }
+      else if (grabbed) {
         const r = grabbed.getBoundingClientRect();
         tx = clamp(r.left + r.width * .78, 44, innerWidth - 44); ty = clamp(r.top - 29, 46, innerHeight - 80);
       } else {
@@ -2562,6 +2614,7 @@ main, section, .content-section, .review-section, #about.content-section, .portf
       }
       vx += ((tx - x) * 70 - vx * 15) * dt; vy += ((ty - y) * 70 - vy * 15) * dt; x += vx * dt; y += vy * dt;
       const dist = Math.hypot(tx - x, ty - y), speed = Math.hypot(vx, vy);
+      if (!surviving && survivalUntil) { survivalUntil = 0; survivalCard = null; release(); }
       if (grabbed && !holding && dist < 10 && speed < 120) {
         holding = true; m.classList.add('is-holding'); grabbed.classList.add('is-grabbed');
         if (Math.random() < .3 && !quietFor(10000)) speak(rnd(GRAB));
